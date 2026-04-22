@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+python-multipart
+pandas
+openpyxl
+beautifulsoup4
+curl_cffi
+requests

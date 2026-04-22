@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Node
+node_modules/
+dist/
+dist-ssr
+*.local
+
+# Scraper Data
+input/
+output/
+*.xlsx
+*.xls
+
+# OS
+.DS_Store
+Thumbs.db
