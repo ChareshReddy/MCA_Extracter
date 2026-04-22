@@ -7,15 +7,21 @@ from curl_cffi import requests
 import threading
 
 def interruptible_sleep(seconds, stop_event):
-    """Sleeps for the given duration but checks the stop_event every second."""
-    for _ in range(int(seconds)):
+    """Sleeps for the given duration but checks the stop_event every second while showing a countdown."""
+    for i in range(int(seconds), 0, -1):
         if stop_event and stop_event.is_set():
+            print("\r" + " " * 50 + "\r", end="", flush=True)
             return True
+        # Visual countdown on the same line
+        print(f"\r[Wait] Resuming in {i} seconds...   ", end="", flush=True)
         time.sleep(1)
+    
     # Handle the fractional part
     fraction = seconds - int(seconds)
     if fraction > 0:
         time.sleep(fraction)
+    
+    print("\r" + " " * 50 + "\r", end="", flush=True) # Clear the countdown line
     return stop_event.is_set() if stop_event else False
 
 # List of all final columns we want to export to the Excel sheet
@@ -330,10 +336,19 @@ def run(input_file=None, output_file=None, delay_range=(30, 300), log_callback=N
         pd.DataFrame(results).to_excel(output_file, index=False)
         print(f"[Save] Autosaved ({i}/{len(cin_list)})")
             
-        # Professional delay model to bypass WAF
+        # Adaptive delay model: 
+        # We start with the full delay_range, but we can slowly reduce the upper bound 
+        # as we progress to speed things up safely.
         import random
-        delay = random.uniform(delay_range[0], delay_range[1])
-        print(f"[Wait] Sleeping for {int(delay)} seconds to emulate human reading...")
+        
+        # Calculate a progress-based max delay (starts at delay_max, ends closer to delay_min + 30)
+        current_min = delay_range[0]
+        initial_max = delay_range[1]
+        progress_factor = i / len(cin_list)
+        # Drop the max delay by up to 40% as we progress
+        dynamic_max = max(current_min + 20, initial_max - (initial_max - current_min) * 0.4 * progress_factor)
+        
+        delay = random.uniform(current_min, dynamic_max)
         if interruptible_sleep(delay, stop_event):
             log("\n[!] Stop signal received during sleep. Terminating.")
             break
