@@ -39,8 +39,23 @@ stop_event = threading.Event()
 
 class ListStream(io.StringIO):
     def write(self, string):
-        if string.strip():
+        if not string:
+            return
+            
+        # If the string contains a carriage return \r, we try to overwrite the last log entry
+        if '\r' in string:
+            # Split by \r to get the latest content
+            parts = string.split('\r')
+            latest = parts[-1].strip()
+            if latest:
+                if scraper_state["logs"]:
+                    scraper_state["logs"][-1] = latest
+                else:
+                    scraper_state["logs"].append(latest)
+        elif string.strip():
+            # Standard print with a newline or just text
             scraper_state["logs"].append(string.strip())
+            
         super().write(string)
 
 def run_scraper_background(input_path: str, output_path: str, delay_min: int, delay_max: int):
