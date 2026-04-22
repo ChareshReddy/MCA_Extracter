@@ -24,9 +24,6 @@ app.add_middleware(
 os.makedirs("input", exist_ok=True)
 os.makedirs("output", exist_ok=True)
 
-# Mount the React frontend (after build)
-if os.path.exists("frontend/dist"):
-    app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="frontend")
 
 # Global state to keep track of the scraping process
 scraper_state = {
@@ -109,6 +106,10 @@ async def download_results():
         media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         filename="Pankaj_Vikram_Extracted_data.xlsx"
     )
+
+# Mount the React frontend (at the end so it doesn't override API routes)
+if os.path.exists("frontend/dist"):
+    app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="frontend")
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -26,14 +26,22 @@ function App() {
       interval = setInterval(async () => {
         try {
           const res = await axios.get(`${API_BASE}/status`);
-          setStatus(res.data);
+          if (res.data && typeof res.data === 'object' && !Array.isArray(res.data)) {
+            setStatus(prev => ({ ...prev, ...res.data }));
+          }
         } catch (e) {
           console.error("Failed to fetch status", e);
         }
       }, 2000);
     } else {
       // Fetch once when not running just to get latest state on load
-      axios.get(`${API_BASE}/status`).then(res => setStatus(res.data)).catch(console.error);
+      axios.get(`${API_BASE}/status`)
+        .then(res => {
+          if (res.data && typeof res.data === 'object' && !Array.isArray(res.data)) {
+            setStatus(prev => ({ ...prev, ...res.data }));
+          }
+        })
+        .catch(console.error);
     }
     return () => clearInterval(interval);
   }, [status.is_running]);
@@ -164,15 +172,15 @@ function App() {
               System Telemetry
             </div>
             <div className="terminal">
-              {status.logs.length === 0 ? (
+              {(!status.logs || status.logs.length === 0) ? (
                 <p style={{ color: 'var(--text-secondary)' }}>Waiting for system initialization...</p>
               ) : (
                 status.logs.map((log, i) => (
                   <p key={i} style={{ 
-                    color: log.includes('[X]') ? '#ef4444' : 
-                           log.includes('[OK]') ? '#10b981' : 
-                           log.includes('[V]') ? '#3b82f6' : 
-                           log.includes('[Wait]') ? '#f59e0b' : '#34d399'
+                    color: log?.includes('[X]') ? '#ef4444' : 
+                           log?.includes('[OK]') ? '#10b981' : 
+                           log?.includes('[V]') ? '#3b82f6' : 
+                           log?.includes('[Wait]') ? '#f59e0b' : '#34d399'
                   }}>
                     {log}
                   </p>
