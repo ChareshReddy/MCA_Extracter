@@ -108,8 +108,8 @@ def scrape_instafinancials(session, cin):
         else:
             # Fallback to the old shortcut if search fails
             target_url = f"https://www.instafinancials.com/company/a-{cin}"
-    except Exception as e:
-        print(f"[!] Search Resolution Failed for {cin}: {e}. Falling back to shortcut.")
+    except Exception:
+        # Silently fall back to the shortcut URL if search resolution fails
         target_url = f"https://www.instafinancials.com/company/a-{cin}"
 
     try:
