@@ -1,0 +1,217 @@
+MCA  Data  Extractor 
+ Application  Guide  Document
+ 
+ 
+Module  1  :  Python  Installation  &  Setup  
+ 
+Website  Link  
+Visit  the  oﬃcial  Python  download  page:  
+Python  Releases  for  Windows  |  Python.org  
+ 
+User  Manual  –  For  python  Installation  &  Setup
+ 
+   
+Step  No  Action  /  Instruction  Screenshot  
+1  Click  the  link  to  download  the  Python  compatible  version:  Python  Release  Python  3.12.0  |Python.org  
+ 
+
+2  Scroll  down  to  the  Files  section  and  click  on  Windows  Installer  (64-bit)  to  download  the  installer  .  
+ 
+3  After  the  download  is  complete,click  the  installer  file  to  start  the  setup.  
+ 
+
+4  Click  on  Run  in  the  security  warning  popup.  
+ 
+
+5  In  the  setup  window,  check  “Add  Python  to  PATH” ,  then  click  Install  Now .   
+ 
+
+6  Wait  for  the  installation  process  to  complete.  
+ 
+
+7  Once  installation  is  successful,  click  Close .   
+ 
+
+8  Open  Command  Prompt  from  the  Start  menu.   
+ 
+
+9  Type  the  command  python  --version and  press  Enter   
+ 
+
+10  Verify  that  the  displayed  version  is  3.12  or  below .   
+ 
+11  If  the  version  is  higher,  uninstall  the  current  Python  version  and  reinstall  a  compatible  version.   
+No  Image   
+ 
+
+Notes  
+●  Ensure  “Add  Python  to  PATH”  is  selected  during  installation.  ●  Use  a  64-bit  installer  for  standard  systems.  ●  Version  3.12  or  below  is  required  for  application  compatibility.  
+  
+ 
+ 
+ 
+ 
+ 
+Module  2  :  Proton  VPN  Download  User  Manual 
+ 
+Website  Link  
+Visit  the  oﬃcial  Proton  VPN  download  page:  
+https://protonvpn.com/download 
+ 
+User  Manual  –  Downloading  Proton  VPN
+ 
+    Step  Instructions  Screenshot  
+1  Open  the  oﬃcial  Proton  VPN  website  using  the  link: https://protonvpn.com/download 
+ No  Image     
+2  Click  on  Download  for  Windows .      
+       
+
+3  Two  options  will  appear.  Click  Windows  11/10  (x64) .  
+ 
+        
+
+4  The  Proton  VPN  setup  ﬁle  will  start  downloading  automatically.  
+                            
+5  Open  the  Downloads  folder  and  locate  the  downloaded  Proton  VPN  application  ﬁle.  
+  
+                                                   
+
+6  Double-click  the  setup  ﬁle.  When  the  User  Account  Control  popup  appears,  click  Yes .  
+ 
+
+7  The  language  selection  window  will  appear.  Select  the  language  and  click  OK .  
+                                
+8  The  Proton  VPN  setup  wizard  will  open.  Click  Next .   
+          
+
+9  In  the  installation  options  screen,  uncheck  all  additional  options,  just  check  for  create  desktop  shortcut  then  click  Install .  
+  
+
+10  Wait  for  the  installation  process  to  complete.  
+   
+
+11  After  installation,  open  the  Proton  VPN  application  from  the  desktop  or  Start  menu.  
+                                                                       
+12  On  the  login  screen,  click  Create  account .  
+  
+
+13  In  the  pricing  page,  click  Sign  up  for  free  at  the  bottom-right  corner.  
+    
+        
+
+14  A  popup  window  will  appear.  Click  Continue  with  free .  
+   
+   
+
+15  Enter  your  email  address  and  click  Start  using  Proton  VPN .  
+       
+        
+
+16  Click  Choose  my  own  password .  
+ 
+
+17  Enter  your  password  and  conﬁrm  the  password,  then  click  Set  new  password .  
+ 
+
+18  After  account  creation,  an  additional  popup  may  appear.  Close  the  popup  and  window.  
+     
+       
+
+19  Return  to  the  login  page,  enter  your  email  and  password,  then  click  Sign  in .  
+   
+    
+
+20  After  successful  login,  the  Proton  VPN  dashboard  will  open.  Click  Connect .  
+  
+     
+21  If  any  promotional  or  information  popups  appear,  close  them.  
+No  Image  
+
+22  Proton  VPN  will  connect  successfully.  Once  connected,  minimize  the  application  and  continue  using  your  system  securely.  
+  
+Notes  
+●  Always  download  Proton  VPN  from  the  oﬃcial  website  only.  ●  Ensure  you  have  an  active  internet  connection  during  download  and  installation.  ●  Restart  the  system  if  required  after  installation.  ●  Use  your  registered  Proton  account  credentials  for  login.  
+ 
+
+Troubleshooting  
+Issue  Solution  
+Download  not  starting  Check  the  internet  connection  and  try  again.  
+Setup  ﬁle  blocked  by  antivirus  
+Allow  the  ﬁle  temporarily  if  downloaded  from  the  oﬃcial  website.  
+Installation  failed  Run  the  setup  ﬁle  as  Administrator.  
+Unable  to  login  Verify  username  and  password  or  reset  password  from  Proton  account  page.  
+VPN  not  connecting  Try  another  server  or  restart  the  application.               
+  
+Module  3  :  App  User  Manual  
+  Step  Instructions  Screenshot  
+1  Download  the  MCA  Portable  Application  ZIP  ﬁle.  
+                                                              
+
+2  Right-click  on  the  ZIP  ﬁle  and  select  Properties .  
+                                          
+
+3  In  the  Properties  window,  check  the  Unblock  option  in  the  Security  section,  then  click  Apply  and  OK .  
+              
+
+4  Right-click  the  ZIP  ﬁle  again  and  click  Extract  All .  
+                   
+
+5  The  extraction  popup  window  will  appear.  Click  Extract .  
+  
+    
+
+6  After  extraction,  open  the  extracted  MCA_Portable_App  folder.  
+                                                     
+7  Inside  the  folder,  you  will  see  multiple  application  ﬁles  and  folders.  
+  
+
+8  For  the  ﬁrst-time  setup,  double-click  Start_MCA_Engine .  
+           
+                               
+9  A  command  prompt  window  will  open  in  the  background.  Wait  until  the  localhost  application  opens  automatically  in  the  browser.  The  ﬁrst  startup  may  take  some  time  because  dependencies  are  initialized.  
+    
+    
+
+10  If  any  error  occurs  in  the  terminal  or  localhost  does  not  open,  close  the  command  prompt  window  and  run  Start_MCA_Engine  again.  
+No  Image  
+11  Once  started  successfully,  the  MCA  Data  Extractor  UI  will  open  in  the  browser.  
+   
+   
+
+12  In  the  UI,  click  Choose  File  to  upload  the  CIN  Excel  input  ﬁle.  The  input  ﬁle  must  contain  fewer  than  500  records.  
+            
+13  Click  Save  Path  and  select  the  output  destination  Excel  ﬁle  location.  
+            
+
+14  After  selecting  both  input  and  output  paths,  click  Initialize  Engine .  
+ 
+15  The  extraction  process  will  begin,  and  extraction  logs  will  appear  in  the  telemetry  section.  
+  
+    
+
+16  If  required,  click  Stop  Engine  to  stop  the  extraction  process  manually.  Extracted  data  will  automatically  be  saved  into  the  selected  output  Excel  ﬁle.  
+       
+ 
+17  Inside  the  application  folder,  double-click  Create_Desktop_Shortcut  to  create  a  shortcut  icon  on  the  desktop.  
+   
+                                           
+18  After  the  shortcut  is  created,  you  can  directly  open  the  application  anytime  using  the  desktop  shortcut.  
+                       
+                                                                    
+
+19  Ensure  Proton  VPN  is  connected  while  using  the  application.  If  the  VPN  disconnects,  the  extraction  process  will  automatically  stop.  
+  
+     
+20  To  change  the  delay  time  between  extractions,  open  the  conﬁg  ﬁle,  edit  the  delay  value,  save  the  ﬁle,  and  restart  the  application.  
+                                
+                                      
+ 
+
+Troubleshooting  
+Issue  Solution  
+Download  not  starting  Check  the  internet  connection  and  try  again.  
+Setup  ﬁle  blocked  by  antivirus  
+Allow  the  ﬁle  temporarily  if  downloaded  from  the  oﬃcial  website.  
+Installation  failed  Run  the  setup  ﬁle  as  Administrator.  
+Unable  to  login  Verify  username  and  password  or  reset  password  from  Proton  account  page.  
+VPN  not  connecting  Try  another  server  or  restart  the  application.   

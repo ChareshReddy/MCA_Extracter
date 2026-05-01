@@ -11,6 +11,9 @@ export default defineConfig({
       '/start': 'http://localhost:8000',
       '/stop': 'http://localhost:8000',
       '/download': 'http://localhost:8000',
+      '/select-output-path': 'http://localhost:8000',
+      '/select-input-path': 'http://localhost:8000',
+      '/heartbeat': 'http://localhost:8000',
     }
   }
 })

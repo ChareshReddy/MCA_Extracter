@@ -1,92 +1,111 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Activity, Download, Upload, Play, Settings, Terminal, RefreshCw } from 'lucide-react';
+import { 
+  Play, 
+  RefreshCw, 
+  FolderOpen, 
+  Terminal, 
+  Upload, 
+  Activity, 
+  CheckCircle2, 
+  AlertCircle,
+  FileSpreadsheet,
+  ExternalLink,
+  Cpu,
+  Lock,
+  Unlock
+} from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_URL || ''; // Relative path if empty or use env var
+const API_BASE = 'http://localhost:8000';
 
 function App() {
-  const [file, setFile] = useState(null);
-  const [uploadedPath, setUploadedPath] = useState('');
-  
+  const [inputPath, setInputPath] = useState("");
+  const [outputPath, setOutputPath] = useState("");
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [pendingRecords, setPendingRecords] = useState(0);
+  const [errorMessage, setErrorMessage] = useState("");
   const [status, setStatus] = useState({
     is_running: false,
-    logs: [],
     progress: 0,
     total: 0,
-    output_file: null,
+    logs: [],
     error: null
   });
 
   const logsEndRef = useRef(null);
+  const terminalRef = useRef(null);
 
-  // Poll status
   useEffect(() => {
-    let interval;
-    if (status.is_running) {
-      interval = setInterval(async () => {
-        try {
-          const res = await axios.get(`${API_BASE}/status`);
-          if (res.data && typeof res.data === 'object' && !Array.isArray(res.data)) {
-            setStatus(prev => ({ ...prev, ...res.data }));
-          }
-        } catch (e) {
-          console.error("Failed to fetch status", e);
-        }
-      }, 2000);
-    } else {
-      // Fetch once when not running just to get latest state on load
-      axios.get(`${API_BASE}/status`)
-        .then(res => {
-          if (res.data && typeof res.data === 'object' && !Array.isArray(res.data)) {
-            setStatus(prev => ({ ...prev, ...res.data }));
-          }
-        })
-        .catch(console.error);
-    }
-    return () => clearInterval(interval);
-  }, [status.is_running]);
-
-  // Auto-scroll disabled per user request to prevent screen movement
-  /*
-  useEffect(() => {
-    const terminal = logsEndRef.current?.parentNode;
-    if (terminal) {
-      const isNearBottom = terminal.scrollHeight - terminal.scrollTop - terminal.clientHeight < 100;
-      if (isNearBottom) {
-        logsEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    // Status polling
+    const statusInterval = setInterval(async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/status`);
+        const data = res.data;
+        setStatus(data);
+        
+        if (data.input_file) setInputPath(data.input_file);
+        if (data.output_file) setOutputPath(data.output_file);
+        if (data.total) setTotalRecords(data.total);
+        if (data.pending) setPendingRecords(data.pending);
+        
+      } catch (err) {
+        console.error("Status check failed", err);
       }
-    }
-  }, [status.logs]);
-  */
+    }, 3000); // 3s interval to reduce console log noise
 
-  const handleFileUpload = async (e) => {
-    const selectedFile = e.target.files[0];
-    if (!selectedFile) return;
-    setFile(selectedFile);
+    // Heartbeat logic for auto-shutdown
+    const ping = async () => {
+      try {
+        await axios.post(`${API_BASE}/heartbeat`);
+      } catch (e) {
+        console.error("Heartbeat failed", e);
+      }
+    };
+    
+    ping(); // Initial ping
+    const heartbeatInterval = setInterval(ping, 5000); // Ping every 5s
 
-    const formData = new FormData();
-    formData.append('file', selectedFile);
+    // Explicit disconnect on tab close/refresh
+    const handleUnload = () => {
+      navigator.sendBeacon(`${API_BASE}/disconnect`);
+    };
+    window.addEventListener('beforeunload', handleUnload);
 
+    return () => {
+      clearInterval(statusInterval);
+      clearInterval(heartbeatInterval);
+      window.removeEventListener('beforeunload', handleUnload);
+    };
+  }, []);
+
+  const handleInputBrowse = async () => {
     try {
-      const res = await axios.post(`${API_BASE}/upload`, formData);
-      setUploadedPath(res.data.path);
+      const res = await axios.get(`${API_BASE}/select-input-path`);
+      if (res.data.path) {
+        setInputPath(res.data.path);
+        setTotalRecords(res.data.total);
+        setPendingRecords(res.data.pending);
+      }
     } catch (err) {
-      console.error("Upload failed", err);
-      alert("Failed to upload file");
+      console.error("Browse Input Error:", err);
+    }
+  };
+
+  const handleBrowse = async () => {
+    try {
+      const inputFilename = inputPath.split(/[/\\]/).pop();
+      const res = await axios.get(`${API_BASE}/select-output-path?input_filename=${encodeURIComponent(inputFilename)}`);
+      if (res.data.path) setOutputPath(res.data.path);
+    } catch (err) {
+      console.error("Browse Error:", err);
     }
   };
 
   const startScraping = async () => {
-    if (!uploadedPath) {
-      alert("Please upload an input file first.");
-      return;
-    }
     try {
-      await axios.post(`${API_BASE}/start?input_file=${uploadedPath}`);
-      setStatus(prev => ({ ...prev, is_running: true, logs: ["Starting scraper engine..."] }));
+      await axios.post(`${API_BASE}/start?input_file=${encodeURIComponent(inputPath)}&output_path=${encodeURIComponent(outputPath)}&total=${totalRecords}&pending=${pendingRecords}`);
     } catch (err) {
-      console.error(err);
-      alert("Failed to start scraping.");
+      console.error("Start Error:", err);
     }
   };
 
@@ -94,103 +113,263 @@ function App() {
     try {
       await axios.post(`${API_BASE}/stop`);
     } catch (err) {
-      console.error(err);
-      alert("Failed to stop scraping.");
+      console.error("Stop Error:", err);
     }
   };
 
-  const downloadResults = () => {
-    window.open(`${API_BASE}/download`, '_blank');
+  const handleOpenFile = async () => {
+    try {
+      await axios.get(`${API_BASE}/open-file?path=${encodeURIComponent(outputPath)}`);
+    } catch (err) {
+      console.error("Open File Error:", err);
+      alert("Error opening file: " + (err.response?.data?.message || err.message));
+    }
+  };
+
+  const handleOpenFolder = async () => {
+    try {
+      await axios.get(`${API_BASE}/open-folder?path=${encodeURIComponent(outputPath)}`);
+    } catch (err) {
+      console.error("Open Folder Error:", err);
+      alert("Error opening folder: " + (err.response?.data?.message || err.message));
+    }
   };
 
   return (
-    <div style={{ padding: '3rem', display: 'flex', flexDirection: 'column', gap: '3rem', flex: 1 }}>
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1600px', margin: '0 auto', width: '95%' }}>
-        <div>
-          <h1 style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>Pankaj Vikram IT Group</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>High-Volume Data Extraction Engine</p>
+    <div className="app-root">
+      <header className="app-header">
+        <div className="logo-container">
+          <h1>Companies Data Extractor</h1>
         </div>
-        <div className={`status-badge ${status.is_running ? 'status-running animate-pulse' : 'status-idle'}`}>
-          <Activity size={14} />
-          {status.is_running ? 'Engine Active' : 'System Idle'}
+        <div className={`status-badge ${status.is_running ? 'status-running animate-pulse' : 'status-idle'}`} 
+             style={{ 
+               padding: '0.5rem 1rem', 
+               borderRadius: '99px', 
+               fontSize: '0.8rem', 
+               fontWeight: '600',
+               display: 'flex',
+               alignItems: 'center',
+               gap: '0.5rem',
+               background: status.is_running ? 'rgba(59, 130, 246, 0.1)' : 'rgba(156, 163, 175, 0.1)',
+               color: status.is_running ? '#3b82f6' : '#9ca3af',
+               border: `1px solid ${status.is_running ? 'rgba(59, 130, 246, 0.2)' : 'rgba(156, 163, 175, 0.2)'}`
+             }}>
+          <Activity size={16} />
+          {status.is_running ? "Engine Active" : "System Idle"}
         </div>
       </header>
 
-      <main className="dashboard-container" style={{ padding: 0 }}>
-        {/* Left Column: Config */}
-        <div className="left-column">
-          <section className="panel">
-            <div className="panel-header">
-              <Upload size={20} color="var(--accent-primary)" />
-              Data Source
+      <main className="dashboard-main">
+        {/* Sidebar */}
+        <aside className="sidebar">
+          {/* Input File Section */}
+          <section className="glass-panel animate-in">
+            <div className="panel-title">
+              <Upload size={20} color="var(--accent-blue)" />
+              Input File
             </div>
-            <div className="form-group">
-              <label>Input Excel File (CIN List)</label>
-              <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} disabled={status.is_running} />
-              {file && <p style={{ fontSize: '0.8rem', color: 'var(--success)' }}>✓ {file.name} uploaded</p>}
+            
+            <div className="input-group">
+              <label className="label-text">Select Input Excel File (CIN List)</label>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button className="btn-base" 
+                        style={{ background: 'var(--panel-hover)', border: '1px solid var(--border-dim)', color: 'white' }}
+                        onClick={handleInputBrowse}
+                        disabled={status.is_running}>
+                  <FolderOpen size={18} />
+                  Choose File
+                </button>
+                <div className="file-display" title={inputPath}>
+                  <span className="file-name">{inputPath ? inputPath.split(/[/\\]/).pop() : "No file selected..."}</span>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1.25rem' }}>
+              <div style={{ 
+                padding: '0.75rem 1rem', 
+                borderRadius: '10px', 
+                background: totalRecords > 0 ? 'rgba(59, 130, 246, 0.08)' : 'rgba(255, 255, 255, 0.02)', 
+                border: `1px solid ${totalRecords > 0 ? 'rgba(59, 130, 246, 0.15)' : 'var(--border-dim)'}`, 
+                display: 'flex', 
+                flexDirection: 'column', 
+                gap: '0.25rem',
+                opacity: totalRecords > 0 ? 1 : 0.5,
+                transition: 'all 0.3s ease'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <CheckCircle2 size={16} color={totalRecords > 0 ? 'var(--accent-blue)' : 'var(--text-dim)'} />
+                  <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Records</span>
+                </div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: totalRecords > 0 ? 'var(--text-main)' : 'var(--text-dim)', paddingLeft: '1.75rem' }}>
+                  {totalRecords || "0"}
+                </div>
+              </div>
+              
+              <div style={{ 
+                padding: '0.75rem 1rem', 
+                borderRadius: '10px', 
+                background: pendingRecords > 0 ? 'rgba(245, 158, 11, 0.08)' : 'rgba(255, 255, 255, 0.02)', 
+                border: `1px solid ${pendingRecords > 0 ? 'rgba(245, 158, 11, 0.15)' : 'var(--border-dim)'}`, 
+                display: 'flex', 
+                flexDirection: 'column', 
+                gap: '0.25rem',
+                opacity: pendingRecords > 0 ? 1 : 0.5,
+                transition: 'all 0.3s ease'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <RefreshCw size={16} color={pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)'} />
+                  <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Records Pending</span>
+                </div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)', paddingLeft: '1.75rem' }}>
+                  {pendingRecords || "0"}
+                </div>
+              </div>
             </div>
           </section>
 
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            {!status.is_running ? (
-              <button 
-                className="btn btn-primary" 
-                style={{ flex: 1 }} 
-                onClick={startScraping}
-                disabled={!uploadedPath}
-              >
-                <Play size={18} />
-                Initialize Engine
-              </button>
-            ) : (
-              <button 
-                className="btn btn-danger" 
-                style={{ flex: 1 }} 
-                onClick={stopScraping}
-              >
-                <RefreshCw size={18} className="animate-pulse" />
-                Stop Engine
-              </button>
-            )}
-            <button 
-              className="btn btn-success"
-              onClick={downloadResults}
-              disabled={!status.output_file}
-              title={!status.output_file ? "Wait for first results to export" : "Download current results"}
-            >
-              <Download size={18} />
-              Export
-            </button>
-          </div>
-        </div>
-
-        {/* Right Column: Logs */}
-        <div style={{ height: '100%', overflow: 'hidden' }}>
-          <section className="panel" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-            <div className="panel-header">
-              <Terminal size={20} color="var(--accent-primary)" />
-              System Telemetry
+          {/* Output File Section */}
+          <section className="glass-panel animate-in" style={{ animationDelay: '0.1s' }}>
+            <div className="panel-title">
+              <FileSpreadsheet size={20} color="var(--accent-purple)" />
+              Output File
             </div>
-            <div className="terminal">
-              {(!status.logs || status.logs.length === 0) ? (
-                <p style={{ color: 'var(--text-secondary)' }}>Waiting for system initialization...</p>
+            
+            <div className="input-group">
+              <label className="label-text">Export Destination Path</label>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button className="btn-base" 
+                        style={{ background: 'var(--panel-hover)', border: '1px solid var(--border-dim)', color: 'white' }}
+                        onClick={handleBrowse}
+                        disabled={status.is_running || !inputPath}>
+                  <ExternalLink size={18} />
+                  Save Path
+                </button>
+                <div className="file-display" title={outputPath}>
+                  <span className="file-name">{outputPath ? outputPath.split(/[/\\]/).pop() : "No location selected..."}</span>
+                  {outputPath && (
+                    <div style={{ display: 'flex', gap: '0.5rem', marginLeft: '0.5rem' }}>
+                      <button 
+                        onClick={handleOpenFile} 
+                        disabled={status.is_running} 
+                        title="Open Excel" 
+                        style={{ 
+                          background: 'none', 
+                          border: 'none', 
+                          color: 'var(--accent-blue)', 
+                          cursor: status.is_running ? 'not-allowed' : 'pointer',
+                          opacity: status.is_running ? 0.5 : 1
+                        }}
+                      >
+                        <FileSpreadsheet size={16} />
+                      </button>
+                      <button 
+                        onClick={handleOpenFolder} 
+                        disabled={status.is_running} 
+                        title="Open Folder" 
+                        style={{ 
+                          background: 'none', 
+                          border: 'none', 
+                          color: 'var(--accent-blue)', 
+                          cursor: status.is_running ? 'not-allowed' : 'pointer',
+                          opacity: status.is_running ? 0.5 : 1
+                        }}
+                      >
+                        <FolderOpen size={16} />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Control Panel */}
+          <section className="glass-panel animate-in" style={{ padding: '0.75rem' }}>
+            <button 
+              className={`btn-base btn-large ${status.is_running ? 'btn-danger' : 'btn-primary'}`}
+              onClick={status.is_running ? stopScraping : startScraping}
+              disabled={!inputPath || !outputPath}
+            >
+              {status.is_running ? <Activity className="animate-pulse" /> : <Play />}
+              {status.is_running ? "Stop Extraction" : "Start Extraction"}
+            </button>
+          </section>
+        </aside>
+
+        {/* Main Content Area */}
+        <section className="content-area">
+          {/* Progress Header Panel */}
+          <div className="glass-panel animate-in" style={{ animationDelay: '0.2s' }}>
+            <div className="progress-container">
+              <div className="progress-header">
+                <span style={{ fontWeight: '600', color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>EXTRACTION PROGRESS</span>
+                <span style={{ fontWeight: '700', color: 'var(--accent-blue)' }}>
+                  {status.progress} / {pendingRecords} ({pendingRecords > 0 ? ((status.progress / pendingRecords) * 100).toFixed(1) : "0.0"}%)
+                </span>
+              </div>
+              <div className="progress-track">
+                <div className="progress-fill" style={{ width: `${pendingRecords > 0 ? (status.progress / pendingRecords) * 100 : 0}%` }}></div>
+              </div>
+            </div>
+
+            <div className="stats-grid">
+              <div className="stat-card">
+                <div className="stat-label">Records Processed</div>
+                <div className="stat-value" style={{ color: 'var(--accent-blue)' }}>{status.progress}</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-label">Current State</div>
+                <div className="stat-value" style={{ color: status.is_running ? 'var(--success-green)' : 'var(--text-dim)', fontSize: '1rem', textTransform: 'uppercase' }}>
+                  {status.is_running ? "Running" : "Idle"}
+                </div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-label">Success Rate</div>
+                <div className="stat-value" style={{ color: 'var(--success-green)' }}>
+                  {pendingRecords > 0 ? ((status.progress / pendingRecords) * 100).toFixed(1) : "0.0"}%
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* System Log Panel */}
+          <section className="glass-panel animate-in" style={{ flex: 1, display: 'flex', flexDirection: 'column', animationDelay: '0.3s' }}>
+            <div className="panel-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <Terminal size={20} color="var(--accent-blue)" />
+                System Log
+              </div>
+            </div>
+            <div className="terminal-wrapper" ref={terminalRef}>
+              {status.logs.length === 0 ? (
+                <p style={{ color: 'var(--text-dim)', fontStyle: 'italic' }}>Initializing engine console...</p>
               ) : (
                 status.logs.map((log, i) => (
-                  <p key={i} style={{ 
-                    color: log?.includes('[X]') ? '#ef4444' : 
-                           log?.includes('[OK]') ? '#10b981' : 
-                           log?.includes('[V]') ? '#3b82f6' : 
-                           log?.includes('[Wait]') ? '#f59e0b' : '#34d399'
+                  <div key={i} style={{ 
+                    marginBottom: '0.25rem',
+                    color: log.includes('[OK]') ? 'var(--success-green)' : 
+                           log.includes('[V]') ? 'var(--success-green)' : 
+                           log.includes('[Save]') ? 'var(--success-green)' : 
+                           log.includes('[KillSwitch]') ? 'var(--success-green)' : 
+                           log.includes('[Go]') ? 'var(--accent-blue)' : 
+                           log.includes('[Wait]') ? 'var(--warning-orange)' : 
+                           log.includes('[X]') ? 'var(--danger-red)' : 'var(--text-main)'
                   }}>
+                    <span style={{ color: 'var(--text-dim)', marginRight: '0.5rem' }}>&gt;</span>
                     {log}
-                  </p>
+                  </div>
                 ))
               )}
-              {status.error && <p style={{ color: '#ef4444', fontWeight: 'bold' }}>CRITICAL ERROR: {status.error}</p>}
+              {status.error && (
+                <div style={{ color: 'var(--danger-red)', fontWeight: 'bold', marginTop: '1rem', padding: '1rem', background: 'rgba(239, 68, 68, 0.1)', borderRadius: '8px', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+                  CRITICAL ERROR: {status.error}
+                </div>
+              )}
               <div ref={logsEndRef} />
             </div>
           </section>
-        </div>
+        </section>
       </main>
     </div>
   );
