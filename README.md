@@ -2,7 +2,7 @@
 
 A high-performance, professional-grade desktop automation system designed for high-volume data extraction from the MCA portal. This system features a premium React dashboard, robust process management, and advanced security protocols.
 
-![Dashboard Preview](https://via.placeholder.com/1200x600/1a1a2e/ffffff?text=Companies+Data+Extractor+v2.0)
+![Dashboard Preview](assets/dashboard_preview.png)
 
 ## 🚀 Key Features
 
