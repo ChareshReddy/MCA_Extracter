@@ -8,6 +8,34 @@ from bs4 import BeautifulSoup
 from curl_cffi import requests
 import threading
 import config
+import logging
+from logging.handlers import RotatingFileHandler
+
+# Setup Logging for Scraper
+def setup_scraper_logging():
+    log_dir = "logs"
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+    
+    log_file = os.path.join(log_dir, "app.log")
+    
+    logger = logging.getLogger("scraper")
+    logger.setLevel(logging.INFO)
+    
+    # Avoid duplicate handlers if logger is already configured
+    if not logger.handlers:
+        handler = RotatingFileHandler(log_file, maxBytes=5*1024*1024, backupCount=2)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        # Add a console handler as well
+        console = logging.StreamHandler()
+        console.setFormatter(formatter)
+        logger.addHandler(console)
+    
+    return logger
+
+logger = setup_scraper_logging()
 
 def interruptible_sleep(seconds, stop_event):
     """Sleeps for the given duration but checks the stop_event every second."""
@@ -72,9 +100,10 @@ def scrape_mca_data(session, cin, log_callback=None):
         return {"CIN": cin, "Company Name": "NA", "Status": "Incorrect Format"}
 
     if log_callback:
+        logger.info(f"Fetching {cin} from MCA...")
         log_callback(f"[Go] Fetching {cin} from MCA...")
     else:
-        print(f"\n[Go] Fetching {cin} from MCA...")
+        logger.info(f"Fetching {cin} from MCA...")
 
     # Initialize data dictionary with default 'NA' values
     data = {k: "NA" for k in FIELDS}
@@ -114,7 +143,7 @@ def scrape_mca_data(session, cin, log_callback=None):
     try:
         r = session.get(target_url, headers=headers, timeout=15)
         if r.status_code != 200:
-            print(f"[!] Failed to fetch (Status Code: {r.status_code})")
+            logger.error(f"Failed to fetch {cin} (Status Code: {r.status_code})")
             return data
 
         soup = BeautifulSoup(r.text, 'html.parser')
@@ -363,11 +392,13 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
             except Exception as e:
                 attempts += 1
                 if attempts < 3:
+                    logger.warning(f"WAF Block detected for {cin}. Pausing for 30 seconds... (Attempt {attempts}/3)")
                     log(f"[Refresh] WAF Block detected. Pausing for 30 seconds... (Attempt {attempts}/3)")
                     if interruptible_sleep(30, stop_event):
                         break
                     session = requests.Session(impersonate="chrome110")
                 else:
+                    logger.error(f"Failed to fetch {cin} after 3 attempts.")
                     log(f"[X] Failed to fetch {cin} after 3 attempts.")
                     break
         
@@ -376,10 +407,12 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
             df_full.at[idx, 'Status'] = "Exported"
             df_full.at[idx, 'Extracted Time'] = current_time
             results.append(extracted_data)
+            logger.info(f"Successfully exported {cin}")
             log(f"[Save] {cin} -> Exported")
         else:
             df_full.at[idx, 'Status'] = "Incorrect Format"
             df_full.at[idx, 'Extracted Time'] = current_time
+            logger.error(f"Failed to export {cin} (Incorrect Format or NA)")
             log(f"[Fail] {cin} -> Incorrect Format")
 
         # Save both files incrementally
@@ -394,10 +427,12 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
             processed_count += 1
             update_progress(processed_count, total_records)
         except Exception as e:
+            logger.error(f"File Save Error: {e}")
             log(f"[!] Warning: Could not save files (maybe they are open in Excel?): {e}")
 
         # Random delay between delay_min and delay_max seconds
         delay = random.uniform(delay_range[0], delay_range[1])
+        logger.info(f"Sleeping for {int(delay)}s...")
         log(f"[Wait] Next extraction in {int(delay)}s...")
         if interruptible_sleep(delay, stop_event):
             break

@@ -9,6 +9,34 @@ from curl_cffi import requests
 import threading
 import config
 import subprocess
+import logging
+from logging.handlers import RotatingFileHandler
+
+# Setup Logging for Scraper
+def setup_scraper_logging():
+    log_dir = "logs"
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+    
+    log_file = os.path.join(log_dir, "app.log")
+    
+    logger = logging.getLogger("scraper")
+    logger.setLevel(logging.INFO)
+    
+    # Avoid duplicate handlers if logger is already configured
+    if not logger.handlers:
+        handler = RotatingFileHandler(log_file, maxBytes=5*1024*1024, backupCount=2)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        # Add a console handler as well
+        console = logging.StreamHandler()
+        console.setFormatter(formatter)
+        logger.addHandler(console)
+    
+    return logger
+
+logger = setup_scraper_logging()
 
 def check_vpn_active():
     """Returns True if a VPN connection is detected via Windows network adapters."""
@@ -365,6 +393,7 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
         is_valid_llpin = len(cin) == 7
         
         if not (is_valid_cin or is_valid_llpin):
+            logger.warning(f"Skipping {cin} - Incorrect Format")
             log(f"[Skip] '{cin}' -> Incorrect Format")
             df_full.at[idx, 'Status'] = "Incorrect Format"
             df_full.at[idx, 'Extracted Time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -391,16 +420,19 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
                 break
             except Exception as e:
                 if str(e) == "VPN_LOST":
+                    logger.critical("CRITICAL: VPN Connection Lost! Aborting extraction.")
                     log("\n[!!!] VPN LOST DURING EXTRACTION! ABORTING... [!!!]")
                     if stop_event: stop_event.set()
                     break
                 attempts += 1
                 if attempts < 3:
+                    logger.warning(f"WAF Block for {cin}. Sleeping 30s. (Attempt {attempts}/3)")
                     log(f"[Refresh] WAF Block detected. Pausing for 30 seconds... (Attempt {attempts}/3)")
                     if interruptible_sleep(30, stop_event):
                         break
                     session = requests.Session(impersonate="chrome110")
                 else:
+                    logger.error(f"Permanently failed to fetch {cin} after 3 retries.")
                     log(f"[X] Failed to fetch {cin} after 3 attempts.")
                     break
         
@@ -409,6 +441,7 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
             df_full.at[idx, 'Status'] = "Exported"
             df_full.at[idx, 'Extracted Time'] = current_time
             results.append(extracted_data)
+            logger.info(f"Successfully exported {cin}")
             log(f"[Save] {cin} -> Exported")
         else:
             df_full.at[idx, 'Status'] = "Incorrect Format"

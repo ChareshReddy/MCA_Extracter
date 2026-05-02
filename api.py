@@ -250,7 +250,7 @@ def select_input_path():
             if file_ext not in ['.xlsx', '.xls']:
                 return JSONResponse(status_code=400, content={"message": "INVALID FILE TYPE: Please select a valid Excel file (.xlsx or .xls)"})
             
-            print(f"[UI] Selected: {file_path}")
+            logger.info(f"User selected input file: {file_path}")
             # Get record count and metadata
             try:
                 df = pd.read_excel(file_path, header=None)
@@ -261,12 +261,14 @@ def select_input_path():
                         break
                 
                 if header_row is None:
+                    logger.error(f"Failed to read input file (missing CIN): {file_path}")
                     return JSONResponse(status_code=400, content={"message": "Could not find 'CIN' column in the selected file."})
                 
                 data_rows = df.index[header_row + 1:]
                 total_records = len(data_rows)
                 
                 if total_records > config.MAX_RECORDS_PER_FILE:
+                    logger.warning(f"File exceeds record limit: {total_records} records.")
                     return JSONResponse(status_code=400, content={
                         "message": f"File contains {total_records} records. Please add a file with less than {config.MAX_RECORDS_PER_FILE} records.",
                         "total": total_records
