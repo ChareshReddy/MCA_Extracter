@@ -170,76 +170,77 @@ function App() {
 
       <main className="dashboard-main">
         {/* Sidebar */}
-        <aside className="sidebar" style={{ gap: '0.6rem' }}>
+        <aside className="sidebar" style={{ gap: '0.75rem', height: '100%', display: 'flex', flexDirection: 'column' }}>
           {/* Input File Section */}
           <section className="glass-panel animate-in" style={{ 
             display: 'flex', 
             flexDirection: 'column', 
             gap: '0.75rem', 
-            padding: '1rem',
-            overflow: 'hidden'
+            padding: '1.25rem',
+            flex: 1,
+            minHeight: 0
           }}>
-            <div className="panel-title" style={{ marginBottom: '0.5rem' }}>
-              <Upload size={18} color="var(--accent-blue)" />
+            <div className="panel-title" style={{ marginBottom: '0.75rem' }}>
+              <Upload size={20} color="var(--accent-blue)" />
               Input File
             </div>
             
-            <div className="input-group" style={{ marginBottom: '0.5rem' }}>
+            <div className="input-group" style={{ marginBottom: '1rem' }}>
               <label className="label-text">SELECT INPUT EXCEL FILE (CIN LIST)</label>
-              <div style={{ display: 'flex', gap: '0.4rem' }}>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <button className="btn-base" 
-                        style={{ padding: '0.4rem 0.6rem', background: 'var(--panel-hover)', border: '1px solid var(--border-dim)', color: 'white', flexShrink: 0 }}
+                        style={{ padding: '0.5rem 0.75rem', background: 'var(--panel-hover)', border: '1px solid var(--border-dim)', color: 'white', flexShrink: 0 }}
                         onClick={handleInputBrowse}
                         disabled={status.is_running}>
-                  <FolderOpen size={16} />
+                  <FolderOpen size={18} />
                   Choose File
                 </button>
-                <div className="file-display" style={{ flex: 1, minWidth: 0, padding: '0.5rem 0.75rem' }}>
+                <div className="file-display" style={{ flex: 1, minWidth: 0 }}>
                   <span className="file-name">{inputPath ? inputPath.split(/[/\\]/).pop() : "No file selected..."}</span>
                 </div>
               </div>
             </div>
 
-            <div className="stats-compact-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <div className="stat-box-adaptive total-records" style={{ padding: '0.5rem 0.75rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <CheckCircle2 className="stat-icon-adaptive" size={14} color={totalRecords > 0 ? 'var(--accent-blue)' : 'var(--text-dim)'} />
-                  <span className="stat-label-adaptive" style={{ fontSize: '0.7rem' }}>Total Records</span>
+            <div className="stats-compact-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', flex: 1, justifyContent: 'center' }}>
+              <div className="stat-box-adaptive total-records">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <CheckCircle2 className="stat-icon-adaptive" size={16} color={totalRecords > 0 ? 'var(--accent-blue)' : 'var(--text-dim)'} />
+                  <span className="stat-label-adaptive">Total Records</span>
                 </div>
-                <div className="stat-value-adaptive" style={{ fontSize: '1.1rem', paddingLeft: '1.4rem' }}>{totalRecords || "0"}</div>
+                <div className="stat-value-adaptive">{totalRecords || "0"}</div>
               </div>
               
-              <div className="stat-box-adaptive pending-records" style={{ padding: '0.5rem 0.75rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <RefreshCw className="stat-icon-adaptive" size={14} color={pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)'} />
-                  <span className="stat-label-adaptive" style={{ fontSize: '0.7rem' }}>Records Pending</span>
+              <div className="stat-box-adaptive pending-records">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <RefreshCw className="stat-icon-adaptive" size={16} color={pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)'} />
+                  <span className="stat-label-adaptive">Records Pending</span>
                 </div>
-                <div className="stat-value-adaptive" style={{ color: 'var(--warning-orange)', fontSize: '1.1rem', paddingLeft: '1.4rem' }}>{pendingRecords || "0"}</div>
+                <div className="stat-value-adaptive" style={{ color: 'var(--warning-orange)' }}>{pendingRecords || "0"}</div>
               </div>
             </div>
           </section>
 
           {/* Output File Section */}
-          <section className="glass-panel animate-in" style={{ padding: '1rem', animationDelay: '0.1s' }}>
-            <div className="panel-title" style={{ marginBottom: '0.5rem' }}>
-              <FileSpreadsheet size={18} color="var(--accent-purple)" />
+          <section className="glass-panel animate-in" style={{ padding: '1.25rem', animationDelay: '0.1s' }}>
+            <div className="panel-title" style={{ marginBottom: '0.75rem' }}>
+              <FileSpreadsheet size={20} color="var(--accent-purple)" />
               Output File
             </div>
             
             <div className="input-group" style={{ marginBottom: 0 }}>
               <label className="label-text">Export Destination Path</label>
-              <div style={{ display: 'flex', gap: '0.4rem' }}>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <button className="btn-base" 
-                        style={{ padding: '0.4rem 0.6rem', background: 'var(--panel-hover)', border: '1px solid var(--border-dim)', color: 'white' }}
+                        style={{ background: 'var(--panel-hover)', border: '1px solid var(--border-dim)', color: 'white' }}
                         onClick={handleBrowse}
                         disabled={status.is_running || !inputPath}>
-                  <ExternalLink size={16} />
+                  <ExternalLink size={18} />
                   Save Path
                 </button>
-                <div className="file-display" style={{ flex: 1, minWidth: 0, padding: '0.5rem 0.75rem' }} title={outputPath ? outputPath.split(/[/\\]/).pop() : ""}>
+                <div className="file-display" title={outputPath ? outputPath.split(/[/\\]/).pop() : ""}>
                   <span className="file-name">{outputPath ? outputPath.split(/[/\\]/).pop() : "No location selected..."}</span>
                   {outputPath && (
-                    <div style={{ display: 'flex', gap: '0.4rem', marginLeft: '0.4rem' }}>
+                    <div style={{ display: 'flex', gap: '0.5rem', marginLeft: '0.5rem' }}>
                       <button 
                         onClick={handleOpenFile} 
                         disabled={status.is_running} 
@@ -252,7 +253,7 @@ function App() {
                           opacity: status.is_running ? 0.5 : 1
                         }}
                       >
-                        <FileSpreadsheet size={14} />
+                        <FileSpreadsheet size={16} />
                       </button>
                       <button 
                         onClick={handleOpenFolder} 
@@ -266,7 +267,7 @@ function App() {
                           opacity: status.is_running ? 0.5 : 1
                         }}
                       >
-                        <FolderOpen size={14} />
+                        <FolderOpen size={16} />
                       </button>
                     </div>
                   )}
@@ -276,10 +277,10 @@ function App() {
           </section>
 
           <button className={`btn-primary animate-in ${status.is_running ? 'running' : ''}`}
-                  style={{ padding: '1rem', borderRadius: 'var(--radius-md)', fontSize: '1rem', fontWeight: '700' }}
+                  style={{ padding: '1.25rem', borderRadius: 'var(--radius-md)', fontSize: '1.1rem', fontWeight: '700' }}
                   onClick={status.is_running ? stopScraping : startScraping}
                   disabled={!inputPath || !outputPath}>
-            <Play size={20} fill={status.is_running ? "transparent" : "currentColor"} />
+            <Play size={24} fill={status.is_running ? "transparent" : "currentColor"} />
             {status.is_running ? "Stop Extraction" : "Start Extraction"}
           </button>
         </aside>
