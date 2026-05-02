@@ -161,16 +161,13 @@ function App() {
 
       <main className="dashboard-main">
         {/* Sidebar */}
-        <aside className="sidebar">
+        <aside className="sidebar" style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '0.75rem' }}>
           {/* Input File Section */}
           <section className="glass-panel animate-in" style={{ 
             display: 'flex', 
             flexDirection: 'column', 
-            gap: '1.25rem', 
+            gap: '1rem', 
             padding: '1.25rem',
-            overflow: 'hidden',
-            flex: '1',
-            justifyContent: 'space-between'
           }}>
             <div className="panel-title">
               <Upload size={20} color="var(--accent-blue)" />
@@ -193,7 +190,7 @@ function App() {
               </div>
             </div>
 
-            <div className="stats-compact-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <div className="stats-compact-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
               <div className="stat-box-adaptive total-records">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <CheckCircle2 className="stat-icon-adaptive" size={16} color={totalRecords > 0 ? 'var(--accent-blue)' : 'var(--text-dim)'} />
@@ -213,7 +210,12 @@ function App() {
           </section>
 
           {/* Output File Section */}
-          <section className="glass-panel animate-in" style={{ padding: '1.25rem', flex: '0.6', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <section className="glass-panel animate-in" style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: '1rem', 
+            padding: '1.25rem' 
+          }}>
             <div className="panel-title">
               <FileSpreadsheet size={20} color="var(--accent-purple)" />
               Output File
@@ -268,17 +270,15 @@ function App() {
             </div>
           </section>
 
-          {/* Control Panel */}
-          <section className="glass-panel animate-in" style={{ padding: '0.75rem' }}>
-            <button 
-              className={`btn-base btn-large ${status.is_running ? 'btn-danger' : 'btn-primary'}`}
-              onClick={status.is_running ? stopScraping : startScraping}
-              disabled={!inputPath || !outputPath}
-            >
-              {status.is_running ? <Activity className="animate-pulse" /> : <Play />}
-              {status.is_running ? "Stop Extraction" : "Start Extraction"}
-            </button>
-          </section>
+          <div style={{ flex: 1 }}></div>
+
+          <button className={`btn-primary animate-in ${status.is_running ? 'running' : ''}`}
+                  style={{ padding: '1.25rem', borderRadius: 'var(--radius-md)', fontSize: '1.1rem', fontWeight: '700' }}
+                  onClick={handleStart}
+                  disabled={status.is_running || !inputPath || !outputPath}>
+            <Play size={24} fill={status.is_running ? "transparent" : "currentColor"} />
+            {status.is_running ? "Extraction Running..." : "Start Extraction"}
+          </button>
         </aside>
 
         {/* Main Content Area */}
