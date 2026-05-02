@@ -163,7 +163,7 @@ function App() {
         {/* Sidebar */}
         <aside className="sidebar">
           {/* Input File Section */}
-          <section className="glass-panel animate-in" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1.25rem' }}>
+          <section className="glass-panel animate-in" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1.25rem' }}>
             <div className="panel-title">
               <Upload size={20} color="var(--accent-blue)" />
               Input File
@@ -185,7 +185,7 @@ function App() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: 'auto', marginBottom: 'auto' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <div style={{ 
                 padding: '0.75rem 1rem', 
                 borderRadius: '10px', 
