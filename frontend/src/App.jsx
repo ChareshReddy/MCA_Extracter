@@ -262,28 +262,23 @@ function App() {
 
           <button className={`btn-primary animate-in ${status.is_running ? 'running' : ''}`}
                   style={{ 
-                    padding: '1.5rem', 
+                    padding: '1.25rem', 
                     borderRadius: '16px', 
-                    fontSize: '1.25rem', 
+                    fontSize: '1.2rem', 
                     fontWeight: '800',
-                    letterSpacing: '0.02em',
                     textTransform: 'uppercase',
                     display: 'flex',
-                    flexDirection: 'column',
-                    gap: '0.4rem',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.75rem',
                     height: 'auto',
                     border: '1px solid rgba(255,255,255,0.1)',
                     boxShadow: status.is_running ? '0 0 40px rgba(239, 68, 68, 0.2)' : '0 0 40px rgba(59, 130, 246, 0.2)'
                   }}
                   onClick={status.is_running ? stopScraping : startScraping}
                   disabled={!inputPath || !outputPath}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              {status.is_running ? <Square size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" />}
-              {status.is_running ? "Stop Engine" : "Launch Engine"}
-            </div>
-            <span style={{ fontSize: '0.7rem', opacity: 0.7, fontWeight: '500' }}>
-              {status.is_running ? "TERMINATE ALL PROCESSES" : "START HIGH-VOLUME EXTRACTION"}
-            </span>
+            {status.is_running ? <Square size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" />}
+            {status.is_running ? "Stop Extraction" : "Start Extraction"}
           </button>
         </aside>
 
