@@ -85,12 +85,21 @@ def get_input_data(input_file):
     return df, header_row
 
 
-def scrape_mca_data(session, cin):
+def scrape_mca_data(session, cin, log_callback=None):
     """
     Main extraction function for a single CIN.
     It scrapes the main overview page and the directors sub-page.
     """
-    print(f"\n[Go] Fetching {cin} from MCA...")
+    # Redundant validation safety
+    is_valid_cin = len(cin) == 21 and cin[0].upper() in ['U', 'L']
+    is_valid_llpin = len(cin) == 7
+    if not (is_valid_cin or is_valid_llpin):
+        return {"CIN": cin, "Company Name": "NA", "Status": "Incorrect Format"}
+
+    if log_callback:
+        log_callback(f"[Go] Fetching {cin} from MCA...")
+    else:
+        print(f"\n[Go] Fetching {cin} from MCA...")
 
     # Initialize data dictionary with default 'NA' values
     data = {k: "NA" for k in FIELDS}
@@ -353,10 +362,26 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
         cin = str(df_full.at[idx, cin_col]).strip()
         if not cin or cin == "nan":
             continue
+        
+        # Validation Logic: CIN (21 chars, starts with U/L) or LLPIN (7 chars)
+        is_valid_cin = len(cin) == 21 and cin[0].upper() in ['U', 'L']
+        is_valid_llpin = len(cin) == 7
+        
+        if not (is_valid_cin or is_valid_llpin):
+            log(f"--- VALIDATION FAILED FOR: '{cin}' ---")
+            log(f"[Skip] '{cin}' -> Incorrect Format (Blocked)")
+            df_full.at[idx, 'Status'] = "Incorrect Format"
+            df_full.at[idx, 'Extracted Time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            try:
+                df_full.to_excel(input_file, index=False, header=False)
+                processed_count += 1
+                update_progress(processed_count, total_records)
+            except: pass
+            continue
 
+        # Double check: Is it already done?
         status = str(df_full.at[idx, 'Status']).strip()
         if status == "Exported":
-            # log(f"[Skip] {cin} already exported.")
             continue
 
         attempts = 0
@@ -365,7 +390,7 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
 
         while attempts < 3:
             try:
-                extracted_data = scrape_mca_data(session, cin)
+                extracted_data = scrape_mca_data(session, cin, log_callback=log)
                 success = True
                 break
             except Exception as e:
@@ -390,9 +415,9 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
             results.append(extracted_data)
             log(f"[Save] {cin} -> Exported")
         else:
-            df_full.at[idx, 'Status'] = "Failed Extraction"
+            df_full.at[idx, 'Status'] = "Incorrect Format"
             df_full.at[idx, 'Extracted Time'] = current_time
-            log(f"[Fail] {cin} -> Failed Extraction")
+            log(f"[Fail] {cin} -> Incorrect Format")
 
         # Save both files incrementally
         try:
