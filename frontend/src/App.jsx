@@ -179,7 +179,7 @@ function App() {
                   <FolderOpen size={18} />
                   Choose File
                 </button>
-                <div className="file-display" title={inputPath}>
+                <div className="file-display" title={inputPath ? inputPath.split(/[/\\]/).pop() : ""}>
                   <span className="file-name">{inputPath ? inputPath.split(/[/\\]/).pop() : "No file selected..."}</span>
                 </div>
               </div>
@@ -249,7 +249,7 @@ function App() {
                   <ExternalLink size={18} />
                   Save Path
                 </button>
-                <div className="file-display" title={outputPath}>
+                <div className="file-display" title={outputPath ? outputPath.split(/[/\\]/).pop() : ""}>
                   <span className="file-name">{outputPath ? outputPath.split(/[/\\]/).pop() : "No location selected..."}</span>
                   {outputPath && (
                     <div style={{ display: 'flex', gap: '0.5rem', marginLeft: '0.5rem' }}>
