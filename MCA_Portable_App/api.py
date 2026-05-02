@@ -15,6 +15,30 @@ import time
 import ctypes
 import config
 import subprocess
+import logging
+from logging.handlers import RotatingFileHandler
+
+# Setup Logging
+def setup_app_logging():
+    log_dir = "logs"
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+    
+    log_file = os.path.join(log_dir, "app.log")
+    
+    # Configure logging
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        handlers=[
+            RotatingFileHandler(log_file, maxBytes=5*1024*1024, backupCount=2),
+            logging.StreamHandler()
+        ]
+    )
+    return logging.getLogger(__name__)
+
+logger = setup_app_logging()
+logger.info("Portable App Startup - Logging Initialized")
 
 def check_vpn_active():
     try:
