@@ -191,15 +191,15 @@ function App() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'min(0.5rem, 1.5vh)', flex: 1, justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'min(0.25rem, 1vh)', flex: 1, justifyContent: 'center' }}>
               <div style={{ 
-                padding: 'min(0.75rem, 2vh) 1rem', 
+                padding: 'min(0.5rem, 1.5vh) 0.75rem', 
                 borderRadius: '8px', 
                 background: totalRecords > 0 ? 'rgba(59, 130, 246, 0.08)' : 'rgba(255, 255, 255, 0.02)', 
                 border: `1px solid ${totalRecords > 0 ? 'rgba(59, 130, 246, 0.15)' : 'var(--border-dim)'}`, 
                 display: 'flex', 
                 flexDirection: 'column', 
-                gap: '0.15rem',
+                gap: '0.1rem',
                 opacity: totalRecords > 0 ? 1 : 0.5,
                 transition: 'all 0.3s ease',
                 width: '100%',
@@ -207,22 +207,22 @@ function App() {
                 minHeight: 0
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <CheckCircle2 size={14} color={totalRecords > 0 ? 'var(--accent-blue)' : 'var(--text-dim)'} />
-                  <span style={{ fontSize: 'min(0.7rem, 1.8vh)', color: 'var(--text-dim)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Records</span>
+                  <CheckCircle2 size={12} color={totalRecords > 0 ? 'var(--accent-blue)' : 'var(--text-dim)'} />
+                  <span style={{ fontSize: 'min(0.6rem, 1.5vh)', color: 'var(--text-dim)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Records</span>
                 </div>
-                <div style={{ fontSize: 'min(1.25rem, 3vh)', fontWeight: 'bold', color: totalRecords > 0 ? 'var(--text-main)' : 'var(--text-dim)', paddingLeft: '1.4rem' }}>
+                <div style={{ fontSize: 'min(1.1rem, 2.5vh)', fontWeight: 'bold', color: totalRecords > 0 ? 'var(--text-main)' : 'var(--text-dim)', paddingLeft: '1.25rem', lineHeight: 1 }}>
                   {totalRecords || "0"}
                 </div>
               </div>
               
               <div style={{ 
-                padding: 'min(0.75rem, 2vh) 1rem', 
+                padding: 'min(0.5rem, 1.5vh) 0.75rem', 
                 borderRadius: '8px', 
                 background: pendingRecords > 0 ? 'rgba(245, 158, 11, 0.08)' : 'rgba(255, 255, 255, 0.02)', 
                 border: `1px solid ${pendingRecords > 0 ? 'rgba(245, 158, 11, 0.15)' : 'var(--border-dim)'}`, 
                 display: 'flex', 
                 flexDirection: 'column', 
-                gap: '0.15rem',
+                gap: '0.1rem',
                 opacity: pendingRecords > 0 ? 1 : 0.5,
                 transition: 'all 0.3s ease',
                 width: '100%',
@@ -230,10 +230,10 @@ function App() {
                 minHeight: 0
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <RefreshCw size={14} color={pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)'} />
-                  <span style={{ fontSize: 'min(0.7rem, 1.8vh)', color: 'var(--text-dim)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Records Pending</span>
+                  <RefreshCw size={12} color={pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)'} />
+                  <span style={{ fontSize: 'min(0.6rem, 1.5vh)', color: 'var(--text-dim)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Records Pending</span>
                 </div>
-                <div style={{ fontSize: 'min(1.25rem, 3vh)', fontWeight: 'bold', color: pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)', paddingLeft: '1.4rem' }}>
+                <div style={{ fontSize: 'min(1.1rem, 2.5vh)', fontWeight: 'bold', color: pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)', paddingLeft: '1.25rem', lineHeight: 1 }}>
                   {pendingRecords || "0"}
                 </div>
               </div>
