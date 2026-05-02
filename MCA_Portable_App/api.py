@@ -302,6 +302,13 @@ def select_input_path():
                     pending_count = total_records - exported_count
                     print(f"[DEBUG] Records: Total={total_records}, Exported={exported_count}, Pending={pending_count}")
 
+                scraper_state["input_file"] = file_path
+                scraper_state["total"] = total_records
+                scraper_state["pending"] = pending_count
+                scraper_state["progress"] = 0
+                scraper_state["logs"] = []
+                scraper_state["error"] = None
+
                 return {
                     "path": file_path, 
                     "total": total_records,

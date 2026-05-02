@@ -262,6 +262,9 @@ def select_input_path():
                 scraper_state["input_file"] = file_path
                 scraper_state["total"] = total_records
                 scraper_state["pending"] = pending_count
+                scraper_state["progress"] = 0
+                scraper_state["logs"] = []
+                scraper_state["error"] = None
                 
                 return {
                     "path": file_path, 
