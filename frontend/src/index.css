@@ -245,6 +245,13 @@ body {
 .btn-primary.running {
   background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+  animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-red {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
 }
 
 .btn-primary.running:hover:not(:disabled) {

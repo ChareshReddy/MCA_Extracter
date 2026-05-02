@@ -170,103 +170,85 @@ function App() {
 
       <main className="dashboard-main">
         {/* Sidebar */}
-        <aside className="sidebar" style={{ gap: '0.75rem', height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <aside className="sidebar" style={{ 
+          gap: '1rem', 
+          height: '100%', 
+          display: 'flex', 
+          flexDirection: 'column',
+          justifyContent: 'flex-start'
+        }}>
           {/* Input File Section */}
           <section className="glass-panel animate-in" style={{ 
             display: 'flex', 
             flexDirection: 'column', 
-            gap: '0.75rem', 
-            padding: '1.25rem',
-            flex: 1,
-            minHeight: 0
+            gap: '1.25rem', 
+            padding: '1.5rem',
+            background: 'linear-gradient(180deg, var(--panel-bg) 0%, rgba(17, 24, 39, 0.9) 100%)',
+            border: '1px solid var(--glass-border)'
           }}>
-            <div className="panel-title" style={{ marginBottom: '0.75rem' }}>
-              <Upload size={20} color="var(--accent-blue)" />
-              Input File
+            <div className="panel-title">
+              <div style={{ padding: '0.4rem', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', display: 'flex' }}>
+                <Upload size={20} color="var(--accent-blue)" />
+              </div>
+              Input Configuration
             </div>
             
-            <div className="input-group" style={{ marginBottom: '1rem' }}>
-              <label className="label-text">SELECT INPUT EXCEL FILE (CIN LIST)</label>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <div className="input-group">
+              <label className="label-text" style={{ fontSize: '0.75rem', opacity: 0.8 }}>SOURCE WORKBOOK (.XLSX)</label>
+              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
                 <button className="btn-base" 
-                        style={{ padding: '0.5rem 0.75rem', background: 'var(--panel-hover)', border: '1px solid var(--border-dim)', color: 'white', flexShrink: 0 }}
+                        style={{ padding: '0.6rem 1rem', background: 'var(--panel-hover)', border: '1px solid var(--border-bright)', color: 'white', flexShrink: 0, borderRadius: '10px' }}
                         onClick={handleInputBrowse}
                         disabled={status.is_running}>
                   <FolderOpen size={18} />
-                  Choose File
+                  Browse
                 </button>
-                <div className="file-display" style={{ flex: 1, minWidth: 0 }}>
-                  <span className="file-name">{inputPath ? inputPath.split(/[/\\]/).pop() : "No file selected..."}</span>
+                <div className="file-display" style={{ flex: 1, minWidth: 0, background: 'rgba(0,0,0,0.4)', borderRadius: '10px' }}>
+                  <span className="file-name" style={{ fontWeight: '500' }}>{inputPath ? inputPath.split(/[/\\]/).pop() : "No file selected..."}</span>
                 </div>
               </div>
             </div>
 
-            <div className="stats-compact-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', flex: 1, justifyContent: 'center' }}>
-              <div className="stat-box-adaptive total-records">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <CheckCircle2 className="stat-icon-adaptive" size={16} color={totalRecords > 0 ? 'var(--accent-blue)' : 'var(--text-dim)'} />
-                  <span className="stat-label-adaptive">Total Records</span>
-                </div>
-                <div className="stat-value-adaptive">{totalRecords || "0"}</div>
+            <div className="stats-compact-container" style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
+              <div className="stat-box-adaptive total-records" style={{ flex: 1, padding: '1rem', background: 'rgba(59, 130, 246, 0.05)', border: '1px solid rgba(59, 130, 246, 0.1)' }}>
+                <div className="stat-label-adaptive" style={{ fontSize: '0.65rem' }}>TOTAL</div>
+                <div className="stat-value-adaptive" style={{ fontSize: '1.5rem' }}>{totalRecords || "0"}</div>
               </div>
               
-              <div className="stat-box-adaptive pending-records">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <RefreshCw className="stat-icon-adaptive" size={16} color={pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)'} />
-                  <span className="stat-label-adaptive">Records Pending</span>
-                </div>
-                <div className="stat-value-adaptive" style={{ color: 'var(--warning-orange)' }}>{pendingRecords || "0"}</div>
+              <div className="stat-box-adaptive pending-records" style={{ flex: 1, padding: '1rem', background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.1)' }}>
+                <div className="stat-label-adaptive" style={{ fontSize: '0.65rem' }}>PENDING</div>
+                <div className="stat-value-adaptive" style={{ color: 'var(--warning-orange)', fontSize: '1.5rem' }}>{pendingRecords || "0"}</div>
               </div>
             </div>
           </section>
 
           {/* Output File Section */}
-          <section className="glass-panel animate-in" style={{ padding: '1.25rem', animationDelay: '0.1s' }}>
-            <div className="panel-title" style={{ marginBottom: '0.75rem' }}>
-              <FileSpreadsheet size={20} color="var(--accent-purple)" />
-              Output File
+          <section className="glass-panel animate-in" style={{ padding: '1.5rem', animationDelay: '0.1s', background: 'linear-gradient(180deg, var(--panel-bg) 0%, rgba(17, 24, 39, 0.9) 100%)' }}>
+            <div className="panel-title">
+              <div style={{ padding: '0.4rem', borderRadius: '8px', background: 'rgba(139, 92, 246, 0.1)', display: 'flex' }}>
+                <FileSpreadsheet size={20} color="var(--accent-purple)" />
+              </div>
+              Output Destination
             </div>
             
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="label-text">Export Destination Path</label>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <label className="label-text" style={{ fontSize: '0.75rem', opacity: 0.8 }}>EXPORT PATH</label>
+              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
                 <button className="btn-base" 
-                        style={{ background: 'var(--panel-hover)', border: '1px solid var(--border-dim)', color: 'white' }}
+                        style={{ padding: '0.6rem 1rem', background: 'var(--panel-hover)', border: '1px solid var(--border-bright)', color: 'white', borderRadius: '10px' }}
                         onClick={handleBrowse}
                         disabled={status.is_running || !inputPath}>
                   <ExternalLink size={18} />
-                  Save Path
+                  Path
                 </button>
-                <div className="file-display" title={outputPath ? outputPath.split(/[/\\]/).pop() : ""}>
-                  <span className="file-name">{outputPath ? outputPath.split(/[/\\]/).pop() : "No location selected..."}</span>
+                <div className="file-display" style={{ background: 'rgba(0,0,0,0.4)', borderRadius: '10px' }}>
+                  <span className="file-name">{outputPath ? outputPath.split(/[/\\]/).pop() : "Not set..."}</span>
                   {outputPath && (
                     <div style={{ display: 'flex', gap: '0.5rem', marginLeft: '0.5rem' }}>
-                      <button 
-                        onClick={handleOpenFile} 
-                        disabled={status.is_running} 
-                        title="Open Excel" 
-                        style={{ 
-                          background: 'none', 
-                          border: 'none', 
-                          color: 'var(--accent-blue)', 
-                          cursor: status.is_running ? 'not-allowed' : 'pointer',
-                          opacity: status.is_running ? 0.5 : 1
-                        }}
-                      >
+                      <button onClick={handleOpenFile} disabled={status.is_running} style={{ background: 'none', border: 'none', color: 'var(--accent-blue)', cursor: 'pointer' }}>
                         <FileSpreadsheet size={16} />
                       </button>
-                      <button 
-                        onClick={handleOpenFolder} 
-                        disabled={status.is_running} 
-                        title="Open Folder" 
-                        style={{ 
-                          background: 'none', 
-                          border: 'none', 
-                          color: 'var(--accent-blue)', 
-                          cursor: status.is_running ? 'not-allowed' : 'pointer',
-                          opacity: status.is_running ? 0.5 : 1
-                        }}
-                      >
+                      <button onClick={handleOpenFolder} disabled={status.is_running} style={{ background: 'none', border: 'none', color: 'var(--accent-blue)', cursor: 'pointer' }}>
                         <FolderOpen size={16} />
                       </button>
                     </div>
@@ -276,12 +258,32 @@ function App() {
             </div>
           </section>
 
+          <div style={{ flex: 1 }}></div>
+
           <button className={`btn-primary animate-in ${status.is_running ? 'running' : ''}`}
-                  style={{ padding: '1.25rem', borderRadius: 'var(--radius-md)', fontSize: '1.1rem', fontWeight: '700' }}
+                  style={{ 
+                    padding: '1.5rem', 
+                    borderRadius: '16px', 
+                    fontSize: '1.25rem', 
+                    fontWeight: '800',
+                    letterSpacing: '0.02em',
+                    textTransform: 'uppercase',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.4rem',
+                    height: 'auto',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    boxShadow: status.is_running ? '0 0 40px rgba(239, 68, 68, 0.2)' : '0 0 40px rgba(59, 130, 246, 0.2)'
+                  }}
                   onClick={status.is_running ? stopScraping : startScraping}
                   disabled={!inputPath || !outputPath}>
-            <Play size={24} fill={status.is_running ? "transparent" : "currentColor"} />
-            {status.is_running ? "Stop Extraction" : "Start Extraction"}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              {status.is_running ? <Square size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" />}
+              {status.is_running ? "Stop Engine" : "Launch Engine"}
+            </div>
+            <span style={{ fontSize: '0.7rem', opacity: 0.7, fontWeight: '500' }}>
+              {status.is_running ? "TERMINATE ALL PROCESSES" : "START HIGH-VOLUME EXTRACTION"}
+            </span>
           </button>
         </aside>
 
