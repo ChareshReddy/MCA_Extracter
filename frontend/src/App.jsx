@@ -3,6 +3,7 @@ import axios from 'axios';
 import { 
   Play, 
   FolderOpen, 
+  Terminal,
   Upload, 
   Activity, 
   FileSpreadsheet,
