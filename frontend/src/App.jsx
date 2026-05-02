@@ -163,13 +163,13 @@ function App() {
         {/* Sidebar */}
         <aside className="sidebar">
           {/* Input File Section */}
-          <section className="glass-panel animate-in" style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '1.25rem' }}>
-            <div className="panel-title" style={{ marginBottom: '1.25rem' }}>
+          <section className="glass-panel animate-in" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1.25rem' }}>
+            <div className="panel-title">
               <Upload size={20} color="var(--accent-blue)" />
               Input File
             </div>
             
-            <div className="input-group" style={{ marginBottom: '1.25rem' }}>
+            <div className="input-group">
               <label className="label-text">Select Input Excel File (CIN List)</label>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <button className="btn-base" 
@@ -185,7 +185,7 @@ function App() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', flex: 1, justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: 'auto', marginBottom: 'auto' }}>
               <div style={{ 
                 padding: '0.75rem 1rem', 
                 borderRadius: '10px', 
@@ -195,7 +195,8 @@ function App() {
                 flexDirection: 'column', 
                 gap: '0.25rem',
                 opacity: totalRecords > 0 ? 1 : 0.5,
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                width: '100%'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <CheckCircle2 size={16} color={totalRecords > 0 ? 'var(--accent-blue)' : 'var(--text-dim)'} />
@@ -215,7 +216,8 @@ function App() {
                 flexDirection: 'column', 
                 gap: '0.25rem',
                 opacity: pendingRecords > 0 ? 1 : 0.5,
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                width: '100%'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <RefreshCw size={16} color={pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)'} />
