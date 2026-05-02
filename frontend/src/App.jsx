@@ -170,13 +170,14 @@ function App() {
 
       <main className="dashboard-main">
         {/* Sidebar */}
-        <aside className="sidebar" style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '0.75rem' }}>
+        <aside className="sidebar">
           {/* Input File Section */}
           <section className="glass-panel animate-in" style={{ 
             display: 'flex', 
             flexDirection: 'column', 
-            gap: '1rem', 
+            gap: '1.25rem', 
             padding: '1.25rem',
+            overflow: 'hidden'
           }}>
             <div className="panel-title">
               <Upload size={20} color="var(--accent-blue)" />
@@ -199,7 +200,7 @@ function App() {
               </div>
             </div>
 
-            <div className="stats-compact-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            <div className="stats-compact-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <div className="stat-box-adaptive total-records">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <CheckCircle2 className="stat-icon-adaptive" size={16} color={totalRecords > 0 ? 'var(--accent-blue)' : 'var(--text-dim)'} />
@@ -219,12 +220,7 @@ function App() {
           </section>
 
           {/* Output File Section */}
-          <section className="glass-panel animate-in" style={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            gap: '1rem', 
-            padding: '1.25rem' 
-          }}>
+          <section className="glass-panel animate-in" style={{ animationDelay: '0.1s' }}>
             <div className="panel-title">
               <FileSpreadsheet size={20} color="var(--accent-purple)" />
               Output File
@@ -278,8 +274,6 @@ function App() {
               </div>
             </div>
           </section>
-
-          <div style={{ flex: 1 }}></div>
 
           <button className={`btn-primary animate-in ${status.is_running ? 'running' : ''}`}
                   style={{ padding: '1.25rem', borderRadius: 'var(--radius-md)', fontSize: '1.1rem', fontWeight: '700' }}
