@@ -60,12 +60,21 @@ def get_input_data(input_file):
     return df, header_row
 
 
-def scrape_mca_data(session, cin):
+def scrape_mca_data(session, cin, log_callback=None):
     """
     Main extraction function for a single CIN.
     It scrapes the main overview page and the directors sub-page.
     """
-    print(f"\n[Go] Fetching {cin} from MCA...")
+    # Redundant validation safety
+    is_valid_cin = len(cin) == 21 and cin[0].upper() in ['U', 'L']
+    is_valid_llpin = len(cin) == 7
+    if not (is_valid_cin or is_valid_llpin):
+        return {"CIN": cin, "Company Name": "NA", "Status": "Incorrect Format"}
+
+    if log_callback:
+        log_callback(f"[Go] Fetching {cin} from MCA...")
+    else:
+        print(f"\n[Go] Fetching {cin} from MCA...")
 
     # Initialize data dictionary with default 'NA' values
     data = {k: "NA" for k in FIELDS}
@@ -351,7 +360,7 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
 
         while attempts < 3:
             try:
-                extracted_data = scrape_mca_data(session, cin)
+                extracted_data = scrape_mca_data(session, cin, log_callback=log)
                 success = True
                 break
             except Exception as e:
