@@ -24,6 +24,12 @@ body {
   color: var(--text-main);
   overflow-y: auto;
   min-height: 100vh;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }
 
 .app-container {
@@ -50,7 +56,10 @@ body {
   padding: 2rem 1.5rem;
   gap: 1.5rem;
   z-index: 10;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
+.sidebar-panel::-webkit-scrollbar { display: none; }
 
 .brand-section {
   display: flex;
@@ -307,7 +316,9 @@ body {
   font-size: 0.9rem;
   border: 1px solid rgba(255, 255, 255, 0.03);
   box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.5);
+  scrollbar-width: none;
 }
+.log-window::-webkit-scrollbar { display: none; }
 
 .log-line { display: flex; gap: 1rem; margin-bottom: 0.5rem; }
 .log-prompt { color: var(--text-dim); opacity: 0.5; }
