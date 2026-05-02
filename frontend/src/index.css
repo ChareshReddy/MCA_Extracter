@@ -370,6 +370,89 @@ body {
   animation: animate-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
+/* Adaptive Stats Boxes */
+.stat-box-adaptive {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-dim);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.total-records {
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.15);
+}
+
+.pending-records {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.15);
+}
+
+.stat-label-adaptive {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value-adaptive {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--text-main);
+  padding-left: 1.75rem;
+}
+
+/* COMPACT MODE FOR ZOOM / LOW HEIGHT */
+@media screen and (max-height: 850px) {
+  .sidebar section {
+    gap: 0.5rem !important;
+    padding: 0.75rem !important;
+  }
+  
+  .panel-title {
+    margin-bottom: 0.5rem !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .stat-box-adaptive {
+    padding: 0.4rem 0.75rem !important;
+    gap: 0.1rem !important;
+  }
+  
+  .stat-label-adaptive {
+    font-size: 0.65rem !important;
+  }
+  
+  .stat-value-adaptive {
+    font-size: 1.1rem !important;
+    padding-left: 1.4rem !important;
+  }
+  
+  .stat-icon-adaptive {
+    width: 14px !important;
+    height: 14px !important;
+  }
+  
+  .stats-compact-container {
+    gap: 0.4rem !important;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
 .pulse {
   animation: pulse-anim 2s infinite;
 }
