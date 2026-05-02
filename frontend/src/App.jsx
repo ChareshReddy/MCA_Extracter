@@ -168,7 +168,9 @@ function App() {
             flexDirection: 'column', 
             gap: '1.25rem', 
             padding: '1.25rem',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            flex: '1',
+            justifyContent: 'space-between'
           }}>
             <div className="panel-title">
               <Upload size={20} color="var(--accent-blue)" />
@@ -211,7 +213,7 @@ function App() {
           </section>
 
           {/* Output File Section */}
-          <section className="glass-panel animate-in" style={{ animationDelay: '0.1s' }}>
+          <section className="glass-panel animate-in" style={{ padding: '1.25rem', flex: '0.6', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div className="panel-title">
               <FileSpreadsheet size={20} color="var(--accent-purple)" />
               Output File
