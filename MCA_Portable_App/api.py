@@ -276,7 +276,7 @@ def select_input_path():
         file_path = result.stdout.strip()
         
         if file_path:
-            print(f"[UI] Selected: {file_path}")
+            logger.info(f"User selected input file: {file_path}")
             # Get record count and metadata
             try:
                 df = pd.read_excel(file_path, header=None)
