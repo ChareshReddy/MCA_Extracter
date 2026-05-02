@@ -163,7 +163,7 @@ function App() {
         {/* Sidebar */}
         <aside className="sidebar">
           {/* Input File Section */}
-          <section className="glass-panel animate-in">
+          <section className="glass-panel animate-in" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <div className="panel-title">
               <Upload size={20} color="var(--accent-blue)" />
               Input File
@@ -185,47 +185,43 @@ function App() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1.25rem', flex: 1, justifyContent: 'center' }}>
               <div style={{ 
-                flex: '1 1 120px',
-                padding: '0.5rem 0.75rem', 
-                borderRadius: '8px', 
+                padding: '0.75rem 1rem', 
+                borderRadius: '10px', 
                 background: totalRecords > 0 ? 'rgba(59, 130, 246, 0.08)' : 'rgba(255, 255, 255, 0.02)', 
                 border: `1px solid ${totalRecords > 0 ? 'rgba(59, 130, 246, 0.15)' : 'var(--border-dim)'}`, 
                 display: 'flex', 
                 flexDirection: 'column', 
-                gap: '0.15rem',
+                gap: '0.25rem',
                 opacity: totalRecords > 0 ? 1 : 0.5,
-                transition: 'all 0.3s ease',
-                minWidth: 0
+                transition: 'all 0.3s ease'
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <CheckCircle2 size={14} color={totalRecords > 0 ? 'var(--accent-blue)' : 'var(--text-dim)'} />
-                  <span style={{ fontSize: '0.6rem', color: 'var(--text-dim)', fontWeight: '600', textTransform: 'uppercase' }}>Total</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <CheckCircle2 size={16} color={totalRecords > 0 ? 'var(--accent-blue)' : 'var(--text-dim)'} />
+                  <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Records</span>
                 </div>
-                <div style={{ fontSize: '1rem', fontWeight: 'bold', color: totalRecords > 0 ? 'var(--text-main)' : 'var(--text-dim)', paddingLeft: '1.4rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: totalRecords > 0 ? 'var(--text-main)' : 'var(--text-dim)', paddingLeft: '1.75rem' }}>
                   {totalRecords || "0"}
                 </div>
               </div>
               
               <div style={{ 
-                flex: '1 1 120px',
-                padding: '0.5rem 0.75rem', 
-                borderRadius: '8px', 
+                padding: '0.75rem 1rem', 
+                borderRadius: '10px', 
                 background: pendingRecords > 0 ? 'rgba(245, 158, 11, 0.08)' : 'rgba(255, 255, 255, 0.02)', 
                 border: `1px solid ${pendingRecords > 0 ? 'rgba(245, 158, 11, 0.15)' : 'var(--border-dim)'}`, 
                 display: 'flex', 
                 flexDirection: 'column', 
-                gap: '0.15rem',
+                gap: '0.25rem',
                 opacity: pendingRecords > 0 ? 1 : 0.5,
-                transition: 'all 0.3s ease',
-                minWidth: 0
+                transition: 'all 0.3s ease'
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <RefreshCw size={14} color={pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)'} />
-                  <span style={{ fontSize: '0.6rem', color: 'var(--text-dim)', fontWeight: '600', textTransform: 'uppercase' }}>Pending</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <RefreshCw size={16} color={pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)'} />
+                  <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Records Pending</span>
                 </div>
-                <div style={{ fontSize: '1rem', fontWeight: 'bold', color: pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)', paddingLeft: '1.4rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)', paddingLeft: '1.75rem' }}>
                   {pendingRecords || "0"}
                 </div>
               </div>
