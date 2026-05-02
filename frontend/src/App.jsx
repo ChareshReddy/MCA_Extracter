@@ -163,67 +163,67 @@ function App() {
         {/* Sidebar */}
         <aside className="sidebar">
           {/* Input File Section */}
-          <section className="glass-panel animate-in" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1.25rem' }}>
-            <div className="panel-title">
-              <Upload size={20} color="var(--accent-blue)" />
+          <section className="glass-panel animate-in" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '1rem' }}>
+            <div className="panel-title" style={{ marginBottom: '0.25rem' }}>
+              <Upload size={18} color="var(--accent-blue)" />
               Input File
             </div>
             
             <div className="input-group">
-              <label className="label-text">Select Input Excel File (CIN List)</label>
+              <label className="label-text" style={{ fontSize: '0.7rem', marginBottom: '0.4rem' }}>Select Input Excel File (CIN List)</label>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <button className="btn-base" 
-                        style={{ background: 'var(--panel-hover)', border: '1px solid var(--border-dim)', color: 'white' }}
+                        style={{ padding: '0.5rem 0.75rem', fontSize: '0.8rem', background: 'var(--panel-hover)', border: '1px solid var(--border-dim)', color: 'white' }}
                         onClick={handleInputBrowse}
                         disabled={status.is_running}>
-                  <FolderOpen size={18} />
+                  <FolderOpen size={16} />
                   Choose File
                 </button>
-                <div className="file-display" title={inputPath ? inputPath.split(/[/\\]/).pop() : ""}>
-                  <span className="file-name">{inputPath ? inputPath.split(/[/\\]/).pop() : "No file selected..."}</span>
+                <div className="file-display" style={{ padding: '0.5rem 0.75rem' }} title={inputPath ? inputPath.split(/[/\\]/).pop() : ""}>
+                  <span className="file-name" style={{ fontSize: '0.8rem' }}>{inputPath ? inputPath.split(/[/\\]/).pop() : "No file..."}</span>
                 </div>
               </div>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <div style={{ 
-                padding: '0.75rem 1rem', 
-                borderRadius: '10px', 
+                padding: '0.6rem 0.75rem', 
+                borderRadius: '8px', 
                 background: totalRecords > 0 ? 'rgba(59, 130, 246, 0.08)' : 'rgba(255, 255, 255, 0.02)', 
                 border: `1px solid ${totalRecords > 0 ? 'rgba(59, 130, 246, 0.15)' : 'var(--border-dim)'}`, 
                 display: 'flex', 
                 flexDirection: 'column', 
-                gap: '0.25rem',
+                gap: '0.15rem',
                 opacity: totalRecords > 0 ? 1 : 0.5,
                 transition: 'all 0.3s ease',
                 width: '100%'
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <CheckCircle2 size={16} color={totalRecords > 0 ? 'var(--accent-blue)' : 'var(--text-dim)'} />
-                  <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Records</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <CheckCircle2 size={14} color={totalRecords > 0 ? 'var(--accent-blue)' : 'var(--text-dim)'} />
+                  <span style={{ fontSize: '0.6rem', color: 'var(--text-dim)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Records</span>
                 </div>
-                <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: totalRecords > 0 ? 'var(--text-main)' : 'var(--text-dim)', paddingLeft: '1.75rem' }}>
+                <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: totalRecords > 0 ? 'var(--text-main)' : 'var(--text-dim)', paddingLeft: '1.4rem' }}>
                   {totalRecords || "0"}
                 </div>
               </div>
               
               <div style={{ 
-                padding: '0.75rem 1rem', 
-                borderRadius: '10px', 
+                padding: '0.6rem 0.75rem', 
+                borderRadius: '8px', 
                 background: pendingRecords > 0 ? 'rgba(245, 158, 11, 0.08)' : 'rgba(255, 255, 255, 0.02)', 
                 border: `1px solid ${pendingRecords > 0 ? 'rgba(245, 158, 11, 0.15)' : 'var(--border-dim)'}`, 
                 display: 'flex', 
                 flexDirection: 'column', 
-                gap: '0.25rem',
+                gap: '0.15rem',
                 opacity: pendingRecords > 0 ? 1 : 0.5,
                 transition: 'all 0.3s ease',
                 width: '100%'
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <RefreshCw size={16} color={pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)'} />
-                  <span style={{ fontSize: '0.7rem', color: 'var(--text-dim)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Records Pending</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <RefreshCw size={14} color={pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)'} />
+                  <span style={{ fontSize: '0.6rem', color: 'var(--text-dim)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Records Pending</span>
                 </div>
-                <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)', paddingLeft: '1.75rem' }}>
+                <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: pendingRecords > 0 ? 'var(--warning-orange)' : 'var(--text-dim)', paddingLeft: '1.4rem' }}>
                   {pendingRecords || "0"}
                 </div>
               </div>
