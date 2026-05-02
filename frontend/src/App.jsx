@@ -82,12 +82,21 @@ function App() {
     try {
       const res = await axios.get(`${API_BASE}/select-input-path`);
       if (res.data.path) {
+        const fileExt = res.data.path.split('.').pop().toLowerCase();
+        if (fileExt !== 'xlsx' && fileExt !== 'xls') {
+          alert("INVALID FILE TYPE: Please select a valid Excel file (.xlsx or .xls)");
+          return;
+        }
         setInputPath(res.data.path);
         setTotalRecords(res.data.total);
         setPendingRecords(res.data.pending);
       }
     } catch (err) {
-      console.error("Browse Input Error:", err);
+      if (err.response && err.response.data && err.response.data.message) {
+        alert("UPLOAD ERROR: " + err.response.data.message);
+      } else {
+        console.error("Browse Input Error:", err);
+      }
     }
   };
 

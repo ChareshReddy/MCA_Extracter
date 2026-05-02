@@ -221,6 +221,10 @@ def select_input_path():
         file_path = result.stdout.strip()
         
         if file_path:
+            file_ext = os.path.splitext(file_path)[1].lower()
+            if file_ext not in ['.xlsx', '.xls']:
+                return JSONResponse(status_code=400, content={"message": "INVALID FILE TYPE: Please select a valid Excel file (.xlsx or .xls)"})
+            
             print(f"[UI] Selected: {file_path}")
             # Get record count and metadata
             try:
