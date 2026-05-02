@@ -72,11 +72,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Ensure directories exist
-os.makedirs("input", exist_ok=True)
-os.makedirs("output", exist_ok=True)
-
-
 # Global state to keep track of the scraping process
 scraper_state = {
     "is_running": False,

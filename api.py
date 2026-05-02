@@ -157,7 +157,8 @@ def run_scraper_background(input_path: str, output_path: str, delay_min: int, de
 
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
-    os.makedirs("input", exist_ok=True)
+    # os.makedirs("input", exist_ok=True)
+    pass
     file_path = f"input/{file.filename}"
     content = await file.read()
     with open(file_path, "wb") as f:
