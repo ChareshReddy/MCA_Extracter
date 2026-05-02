@@ -302,9 +302,6 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
         log(f"\n[X] Error: Input file not found.")
         return
 
-    # Ensure the directory structure exists before writing
-    os.makedirs(os.path.dirname(os.path.abspath(output_file)), exist_ok=True)
-    
     log("\n[OK] Starting scraper engine...\n")
     
     df_full, header_row = get_input_data(input_file)
@@ -368,8 +365,7 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
         is_valid_llpin = len(cin) == 7
         
         if not (is_valid_cin or is_valid_llpin):
-            log(f"--- VALIDATION FAILED FOR: '{cin}' ---")
-            log(f"[Skip] '{cin}' -> Incorrect Format (Blocked)")
+            log(f"[Skip] '{cin}' -> Incorrect Format")
             df_full.at[idx, 'Status'] = "Incorrect Format"
             df_full.at[idx, 'Extracted Time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             try:
