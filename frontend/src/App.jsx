@@ -110,7 +110,7 @@ function App() {
             <div className="brand-logo">
               <Activity size={24} color="var(--accent-blue)" />
             </div>
-            <h1 className="brand-name">MCA EXTRACTOR</h1>
+            <h1 className="brand-name">Companies Data Extracter</h1>
           </div>
 
           <section className="glass-panel animate-in" style={{ padding: '1.25rem' }}>
