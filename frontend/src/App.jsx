@@ -283,10 +283,10 @@ function App() {
 
           <button className={`btn-primary animate-in ${status.is_running ? 'running' : ''}`}
                   style={{ padding: '1.25rem', borderRadius: 'var(--radius-md)', fontSize: '1.1rem', fontWeight: '700' }}
-                  onClick={startScraping}
-                  disabled={status.is_running || !inputPath || !outputPath}>
+                  onClick={status.is_running ? stopScraping : startScraping}
+                  disabled={!inputPath || !outputPath}>
             <Play size={24} fill={status.is_running ? "transparent" : "currentColor"} />
-            {status.is_running ? "Extraction Running..." : "Start Extraction"}
+            {status.is_running ? "Stop Extraction" : "Start Extraction"}
           </button>
         </aside>
 

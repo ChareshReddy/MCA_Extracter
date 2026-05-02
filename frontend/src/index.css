@@ -242,6 +242,15 @@ body {
   box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
 }
 
+.btn-primary.running {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-primary.running:hover:not(:disabled) {
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+}
+
 .btn-large {
   padding: 1rem 2rem;
   font-size: 1rem;
