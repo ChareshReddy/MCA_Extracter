@@ -246,10 +246,10 @@ function App() {
                   <span className="file-name">{outputPath ? outputPath.split(/[/\\]/).pop() : "Not set..."}</span>
                   {outputPath && (
                     <div style={{ display: 'flex', gap: '0.5rem', marginLeft: '0.5rem' }}>
-                      <button onClick={handleOpenFile} disabled={status.is_running} style={{ background: 'none', border: 'none', color: 'var(--accent-blue)', cursor: 'pointer' }}>
+                      <button onClick={handleOpenFile} disabled={status.is_running} style={{ background: 'none', border: 'none', color: 'var(--accent-blue)', cursor: status.is_running ? 'not-allowed' : 'pointer', opacity: status.is_running ? 0.4 : 1 }}>
                         <FileSpreadsheet size={16} />
                       </button>
-                      <button onClick={handleOpenFolder} disabled={status.is_running} style={{ background: 'none', border: 'none', color: 'var(--accent-blue)', cursor: 'pointer' }}>
+                      <button onClick={handleOpenFolder} disabled={status.is_running} style={{ background: 'none', border: 'none', color: 'var(--accent-blue)', cursor: status.is_running ? 'not-allowed' : 'pointer', opacity: status.is_running ? 0.4 : 1 }}>
                         <FolderOpen size={16} />
                       </button>
                     </div>
