@@ -339,6 +339,7 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
         is_valid_llpin = len(cin) == 7
         
         if not (is_valid_cin or is_valid_llpin):
+            log(f"--- VALIDATION FAILED FOR: '{cin}' ---")
             log(f"[Skip] '{cin}' -> Incorrect Format (Blocked)")
             df_full.at[idx, 'Status'] = "Incorrect Format"
             df_full.at[idx, 'Extracted Time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
