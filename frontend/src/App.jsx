@@ -210,15 +210,33 @@ function App() {
               </div>
             </div>
 
-            <div className="stats-compact-container" style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
-              <div className="stat-box-adaptive total-records" style={{ flex: 1, padding: '0.75rem', background: 'rgba(59, 130, 246, 0.05)', border: '1px solid rgba(59, 130, 246, 0.1)' }}>
-                <div className="stat-label-adaptive" style={{ fontSize: '0.65rem' }}>TOTAL</div>
-                <div className="stat-value-adaptive" style={{ fontSize: '1.25rem' }}>{totalRecords || "0"}</div>
+            <div className="stats-compact-container" style={{ display: 'flex', gap: '1rem', marginTop: '0.75rem' }}>
+              <div className="stat-box-adaptive total-records" style={{ 
+                flex: 1, 
+                padding: '0.85rem', 
+                background: 'rgba(59, 130, 246, 0.08)', 
+                border: '1px solid rgba(59, 130, 246, 0.15)',
+                borderRadius: '12px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}>
+                <div className="stat-label-adaptive" style={{ fontSize: '0.7rem', fontWeight: '600', opacity: 0.7, marginBottom: '0.2rem' }}>TOTAL RECORDS</div>
+                <div className="stat-value-adaptive" style={{ fontSize: '1.5rem', fontWeight: '800' }}>{totalRecords || "0"}</div>
               </div>
               
-              <div className="stat-box-adaptive pending-records" style={{ flex: 1, padding: '0.75rem', background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.1)' }}>
-                <div className="stat-label-adaptive" style={{ fontSize: '0.65rem' }}>PENDING</div>
-                <div className="stat-value-adaptive" style={{ color: 'var(--warning-orange)', fontSize: '1.25rem' }}>{pendingRecords || "0"}</div>
+              <div className="stat-box-adaptive pending-records" style={{ 
+                flex: 1, 
+                padding: '0.85rem', 
+                background: 'rgba(245, 158, 11, 0.08)', 
+                border: '1px solid rgba(245, 158, 11, 0.15)',
+                borderRadius: '12px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center'
+              }}>
+                <div className="stat-label-adaptive" style={{ fontSize: '0.7rem', fontWeight: '600', opacity: 0.7, marginBottom: '0.2rem' }}>PENDING</div>
+                <div className="stat-value-adaptive" style={{ color: 'var(--warning-orange)', fontSize: '1.5rem', fontWeight: '800' }}>{pendingRecords || "0"}</div>
               </div>
             </div>
           </section>
