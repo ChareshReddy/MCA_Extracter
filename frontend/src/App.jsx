@@ -13,7 +13,8 @@ import {
   ExternalLink,
   Cpu,
   Lock,
-  Unlock
+  Unlock,
+  Square
 } from 'lucide-react';
 
 const API_BASE = 'http://localhost:8000';
