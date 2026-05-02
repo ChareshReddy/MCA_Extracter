@@ -11,31 +11,8 @@ import config
 import logging
 from logging.handlers import RotatingFileHandler
 
-# Setup Logging for Scraper
-def setup_scraper_logging():
-    log_dir = "logs"
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
-    
-    log_file = os.path.join(log_dir, "app.log")
-    
-    logger = logging.getLogger("scraper")
-    logger.setLevel(logging.INFO)
-    
-    # Avoid duplicate handlers if logger is already configured
-    if not logger.handlers:
-        handler = RotatingFileHandler(log_file, maxBytes=5*1024*1024, backupCount=2)
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-        # Add a console handler as well
-        console = logging.StreamHandler()
-        console.setFormatter(formatter)
-        logger.addHandler(console)
-    
-    return logger
-
-logger = setup_scraper_logging()
+# Use the centralized logger configured in api.py
+logger = logging.getLogger(__name__)
 
 def interruptible_sleep(seconds, stop_event):
     """Sleeps for the given duration but checks the stop_event every second."""
