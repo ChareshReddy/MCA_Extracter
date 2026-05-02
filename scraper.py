@@ -335,6 +335,8 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
             df_full.at[idx, 'Extracted Time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             try:
                 df_full.to_excel(input_file, index=False, header=False)
+                processed_count += 1
+                update_progress(processed_count, total_records)
             except: pass
             continue
 
@@ -370,9 +372,9 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
             results.append(extracted_data)
             log(f"[Save] {cin} -> Exported")
         else:
-            df_full.at[idx, 'Status'] = "Failed Extraction"
+            df_full.at[idx, 'Status'] = "Incorrect Format"
             df_full.at[idx, 'Extracted Time'] = current_time
-            log(f"[Fail] {cin} -> Failed Extraction")
+            log(f"[Fail] {cin} -> Incorrect Format")
 
         # Save both files incrementally
         try:
