@@ -190,7 +190,7 @@ async def upload_file(file: UploadFile = File(...)):
         pending_count = total_records
         if 'Status' in df.columns:
             statuses = df['Status'].iloc[header_row+1:].astype(str).str.strip().tolist()
-            exported_count = sum(1 for s in statuses if s == "Exported")
+            exported_count = sum(1 for s in statuses if s in ["Exported", "Incorrect Format"])
             pending_count = total_records - exported_count
 
         return {
