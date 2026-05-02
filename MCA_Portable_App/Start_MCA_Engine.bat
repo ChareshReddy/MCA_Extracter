@@ -34,10 +34,6 @@ echo Starting engine...
 echo (Please keep this window open while using the app)
 echo.
 
-:: Ensure input/output directories exist
-if not exist "input" mkdir "input"
-if not exist "output" mkdir "output"
-
 :: Check and install requirements
 echo Checking dependencies (this may take a minute on the very first run)...
 python -m pip install -r "%~dp0requirements.txt" --quiet --disable-pip-version-check
