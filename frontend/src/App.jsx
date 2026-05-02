@@ -354,10 +354,7 @@ function App() {
               </div>
             </div>
             <div className="terminal-wrapper" ref={terminalRef}>
-              {status.logs.length === 0 ? (
-                <p style={{ color: 'var(--text-dim)', fontStyle: 'italic' }}>Initializing engine console...</p>
-              ) : (
-                status.logs.map((log, i) => (
+              {status.logs.map((log, i) => (
                   <div key={i} style={{ 
                     marginBottom: '0.25rem',
                     color: log.includes('[OK]') ? 'var(--success-green)' : 
@@ -372,7 +369,7 @@ function App() {
                     {log}
                   </div>
                 ))
-              )}
+              }
               {status.error && (
                 <div style={{ color: 'var(--danger-red)', fontWeight: 'bold', marginTop: '1rem', padding: '1rem', background: 'rgba(239, 68, 68, 0.1)', borderRadius: '8px', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
                   CRITICAL ERROR: {status.error}
