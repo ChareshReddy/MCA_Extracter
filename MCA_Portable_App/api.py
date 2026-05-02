@@ -308,7 +308,8 @@ def select_input_path():
                     "pending": pending_count
                 }
             except Exception as e:
-                return JSONResponse(status_code=400, content={"message": f"Error reading file: {str(e)}"})
+                print(f"Excel read error: {e}")
+                return JSONResponse(status_code=400, content={"message": "INVALID EXCEL FILE: This file is either corrupted or not a valid Excel workbook. Please check the file and try again."})
         return {"path": None}
     except Exception as e:
         print(f"Isolated picker error: {e}")
