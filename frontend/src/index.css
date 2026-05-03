@@ -110,7 +110,9 @@ body {
   flex-direction: column;
   gap: 0.75rem;
   overflow-y: auto;
-  padding-right: 0.25rem;
+  overflow-x: hidden;
+  padding-right: 0.5rem;
+  max-height: calc(100vh - 100px);
 }
 
 .sidebar::-webkit-scrollbar {
