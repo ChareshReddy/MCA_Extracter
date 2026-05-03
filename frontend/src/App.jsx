@@ -182,8 +182,8 @@ function App() {
           <section className="glass-panel animate-in" style={{ 
             display: 'flex', 
             flexDirection: 'column', 
-            gap: '1.25rem', 
-            padding: '1.5rem',
+            gap: '1rem', 
+            padding: '1.25rem',
             background: 'linear-gradient(180deg, var(--panel-bg) 0%, rgba(17, 24, 39, 0.9) 100%)',
             border: '1px solid var(--glass-border)'
           }}>
