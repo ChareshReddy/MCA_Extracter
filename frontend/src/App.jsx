@@ -204,7 +204,7 @@ function App() {
                   <FolderOpen size={18} />
                   Choose File
                 </button>
-                <div className="file-display" style={{ flex: 1, minWidth: 0, background: 'rgba(0,0,0,0.4)', borderRadius: '8px' }}>
+                <div className="file-display" style={{ flex: 1, minWidth: 0, background: 'rgba(0,0,0,0.4)', borderRadius: '8px' }} title={inputPath}>
                   <span className="file-name" style={{ fontWeight: '500' }}>{inputPath ? inputPath.split(/[/\\]/).pop() : "No file selected..."}</span>
                 </div>
               </div>
@@ -252,14 +252,18 @@ function App() {
                   <ExternalLink size={18} />
                   Save Path
                 </button>
-                <div className="file-display" style={{ background: 'rgba(0,0,0,0.4)', borderRadius: '8px' }}>
+                <div className="file-display" style={{ background: 'rgba(0,0,0,0.4)', borderRadius: '8px' }} title={outputPath}>
                   <span className="file-name">{outputPath ? outputPath.split(/[/\\]/).pop() : "No location selected..."}</span>
                   {outputPath && (
                     <div style={{ display: 'flex', gap: '0.5rem', marginLeft: '0.5rem' }}>
-                      <button onClick={handleOpenFile} disabled={status.is_running} style={{ background: 'none', border: 'none', color: 'var(--accent-blue)', cursor: 'pointer' }}>
+                      <button onClick={handleOpenFile} disabled={status.is_running} 
+                              style={{ background: 'none', border: 'none', color: 'var(--accent-blue)', cursor: status.is_running ? 'not-allowed' : 'pointer', opacity: status.is_running ? 0.3 : 1 }}
+                              title="Open Excel File">
                         <FileSpreadsheet size={16} />
                       </button>
-                      <button onClick={handleOpenFolder} disabled={status.is_running} style={{ background: 'none', border: 'none', color: 'var(--accent-blue)', cursor: 'pointer' }}>
+                      <button onClick={handleOpenFolder} disabled={status.is_running} 
+                              style={{ background: 'none', border: 'none', color: 'var(--accent-blue)', cursor: status.is_running ? 'not-allowed' : 'pointer', opacity: status.is_running ? 0.3 : 1 }}
+                              title="Show in Folder">
                         <FolderOpen size={16} />
                       </button>
                     </div>
