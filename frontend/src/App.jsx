@@ -282,7 +282,7 @@ function App() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: '0.5rem',
-                    height: 'auto',
+                    height: '3.5rem',
                     border: '1px solid rgba(255,255,255,0.1)',
                     boxShadow: status.is_running ? '0 0 20px rgba(239, 68, 68, 0.1)' : '0 0 20px rgba(59, 130, 246, 0.1)',
                     marginBottom: '0.5rem'
