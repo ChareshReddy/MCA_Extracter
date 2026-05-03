@@ -122,6 +122,58 @@ body {
   border-radius: 10px;
 }
 
+/* Responsive Media Queries */
+@media (max-width: 1200px) {
+  .dashboard-main {
+    flex-direction: column;
+    overflow-y: auto;
+    max-width: 1000px;
+  }
+  
+  .sidebar {
+    width: 100% !important;
+    flex: none !important;
+  }
+  
+  .content-area {
+    flex: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .logo-container h1 {
+    font-size: 1rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .panel-title {
+    font-size: 0.9rem;
+  }
+  
+  .btn-primary {
+    font-size: 0.9rem;
+    height: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-main {
+    padding: 0.75rem;
+    gap: 1rem;
+  }
+  
+  .glass-panel {
+    padding: 1rem !important;
+  }
+}
+
 .sidebar::-webkit-scrollbar-track {
   background: transparent;
 }
@@ -477,4 +529,59 @@ body {
   0% { opacity: 1; }
   50% { opacity: 0.6; }
   100% { opacity: 1; }
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1200px) {
+  .dashboard-main {
+    flex-direction: column;
+    overflow-y: auto;
+    max-width: 1000px;
+    height: auto;
+  }
+  
+  .sidebar {
+    width: 100% !important;
+    flex: none !important;
+    max-width: none !important;
+  }
+  
+  .content-area {
+    flex: none !important;
+    height: 800px; /* Give some fixed height for terminal when stacked */
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .logo-container h1 {
+    font-size: 1rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .panel-title {
+    font-size: 0.9rem;
+  }
+  
+  .btn-primary {
+    font-size: 0.9rem;
+    height: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-main {
+    padding: 0.75rem;
+    gap: 1rem;
+  }
+  
+  .glass-panel {
+    padding: 1rem !important;
+  }
 }
