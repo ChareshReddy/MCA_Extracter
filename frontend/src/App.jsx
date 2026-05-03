@@ -149,13 +149,13 @@ function App() {
     <div className="app-root">
       <header className="app-header">
         <div className="logo-container">
-          <h1>Companies Data Extractor</h1>
+          <h1>Companies Data Extracter</h1>
         </div>
         <div className={`status-badge ${status.is_running ? 'status-running animate-pulse' : 'status-idle'}`} 
              style={{ 
-               padding: '0.5rem 1rem', 
+               padding: '0.4rem 1rem', 
                borderRadius: '99px', 
-               fontSize: '0.8rem', 
+               fontSize: '0.75rem', 
                fontWeight: '600',
                display: 'flex',
                alignItems: 'center',
@@ -164,7 +164,7 @@ function App() {
                color: status.is_running ? '#3b82f6' : '#9ca3af',
                border: `1px solid ${status.is_running ? 'rgba(59, 130, 246, 0.2)' : 'rgba(156, 163, 175, 0.2)'}`
              }}>
-          <Activity size={16} />
+          <Activity size={14} />
           {status.is_running ? "Engine Active" : "System Idle"}
         </div>
       </header>
@@ -210,33 +210,25 @@ function App() {
               </div>
             </div>
 
-            <div className="stats-compact-container" style={{ display: 'flex', gap: '1rem', marginTop: '0.75rem' }}>
+            <div className="stats-compact-container" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '0.75rem' }}>
               <div className="stat-box-adaptive total-records" style={{ 
-                flex: 1, 
-                padding: '0.85rem', 
-                background: 'rgba(59, 130, 246, 0.08)', 
-                border: '1px solid rgba(59, 130, 246, 0.15)',
-                borderRadius: '12px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center'
+                padding: '1rem', 
+                background: 'rgba(59, 130, 246, 0.05)', 
+                border: '1px solid rgba(59, 130, 246, 0.1)',
+                borderRadius: '12px'
               }}>
-                <div className="stat-label-adaptive" style={{ fontSize: '0.7rem', fontWeight: '600', opacity: 0.7, marginBottom: '0.2rem' }}>TOTAL RECORDS</div>
-                <div className="stat-value-adaptive" style={{ fontSize: '1.5rem', fontWeight: '800' }}>{totalRecords || "0"}</div>
+                <div className="stat-label-adaptive" style={{ fontSize: '0.65rem', fontWeight: '700', color: 'var(--accent-blue)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>TOTAL RECORDS</div>
+                <div className="stat-value-adaptive" style={{ fontSize: '1.4rem', fontWeight: '800' }}>{totalRecords || "0"}</div>
               </div>
               
               <div className="stat-box-adaptive pending-records" style={{ 
-                flex: 1, 
-                padding: '0.85rem', 
-                background: 'rgba(245, 158, 11, 0.08)', 
-                border: '1px solid rgba(245, 158, 11, 0.15)',
-                borderRadius: '12px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center'
+                padding: '1rem', 
+                background: 'rgba(245, 158, 11, 0.05)', 
+                border: '1px solid rgba(245, 158, 11, 0.1)',
+                borderRadius: '12px'
               }}>
-                <div className="stat-label-adaptive" style={{ fontSize: '0.7rem', fontWeight: '600', opacity: 0.7, marginBottom: '0.2rem' }}>PENDING</div>
-                <div className="stat-value-adaptive" style={{ color: 'var(--warning-orange)', fontSize: '1.5rem', fontWeight: '800' }}>{pendingRecords || "0"}</div>
+                <div className="stat-label-adaptive" style={{ fontSize: '0.65rem', fontWeight: '700', color: 'var(--warning-orange)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>RECORDS PENDING</div>
+                <div className="stat-value-adaptive" style={{ color: 'var(--warning-orange)', fontSize: '1.4rem', fontWeight: '800' }}>{pendingRecords || "0"}</div>
               </div>
             </div>
           </section>
