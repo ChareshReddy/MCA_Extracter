@@ -243,7 +243,7 @@ function App() {
             </div>
             
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="label-text" style={{ fontSize: '0.75rem', opacity: 0.8 }}>EXPORT DESTINATION PATH</label>
+              <label className="label-text" style={{ fontSize: '0.75rem', opacity: 0.8 }}>SELECT OUTPUT FILE LOCATION</label>
               <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
                 <button className="btn-base" 
                         style={{ padding: '0.5rem 0.75rem', background: 'var(--panel-hover)', border: '1px solid var(--border-bright)', color: 'white', borderRadius: '8px' }}
