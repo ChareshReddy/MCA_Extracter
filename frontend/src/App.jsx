@@ -47,7 +47,11 @@ function App() {
         if (data.input_file) setInputPath(data.input_file);
         if (data.output_file) setOutputPath(data.output_file);
         if (data.total) setTotalRecords(data.total);
-        if (data.pending) setPendingRecords(data.pending);
+        if (data.pending) {
+          // Live decrement: Original Pending - Progress in current session
+          const currentPending = data.pending - (data.progress || 0);
+          setPendingRecords(Math.max(0, currentPending));
+        }
         
       } catch (err) {
         console.error("Status check failed", err);
@@ -306,11 +310,24 @@ function App() {
               <div className="progress-header">
                 <span style={{ fontWeight: '600', color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>EXTRACTION PROGRESS</span>
                 <span style={{ fontWeight: '700', color: 'var(--accent-blue)' }}>
-                  {status.progress} / {pendingRecords} ({pendingRecords > 0 ? ((status.progress / pendingRecords) * 100).toFixed(1) : "0.0"}%)
+                  {status.progress} / {status.session_total || pendingRecords} ({status.session_total > 0 ? ((status.progress / status.session_total) * 100).toFixed(1) : "0.0"}%)
                 </span>
               </div>
               <div className="progress-track">
-                <div className="progress-fill" style={{ width: `${pendingRecords > 0 ? (status.progress / pendingRecords) * 100 : 0}%` }}></div>
+                <div className="progress-fill" style={{ width: `${status.session_total > 0 ? (status.progress / status.session_total) * 100 : 0}%` }}></div>
+              </div>
+              
+              <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1rem', padding: '0.75rem', background: 'rgba(0,0,0,0.2)', borderRadius: '8px', fontSize: '0.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-dim)', flex: 1, minWidth: 0 }}>
+                  <FileText size={14} color="var(--accent-blue)" />
+                  <span style={{ fontWeight: '600', color: 'var(--accent-blue)', textTransform: 'uppercase', fontSize: '0.65rem' }}>INPUT:</span>
+                  <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{inputPath ? inputPath.split(/[/\\]/).pop() : "Not Selected"}</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-dim)', flex: 1, minWidth: 0 }}>
+                  <Save size={14} color="var(--accent-purple)" />
+                  <span style={{ fontWeight: '600', color: 'var(--accent-purple)', textTransform: 'uppercase', fontSize: '0.65rem' }}>OUTPUT:</span>
+                  <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{outputPath ? outputPath.split(/[/\\]/).pop() : "Not Selected"}</span>
+                </div>
               </div>
             </div>
 

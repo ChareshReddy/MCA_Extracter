@@ -102,6 +102,7 @@ scraper_state = {
     "logs": [],
     "progress": 0,
     "total": 0,
+    "session_total": 0,
     "pending": 0,
     "input_file": None,
     "output_file": None,
@@ -200,7 +201,7 @@ def run_scraper_background(input_path: str, output_path: str, delay_min: int, de
             output_file=output_path,
             delay_range=(delay_min, delay_max),
             stop_event=stop_event,
-            progress_callback=lambda p, t: scraper_state.update({"progress": p, "total": t}),
+            progress_callback=lambda p, t: scraper_state.update({"progress": p, "session_total": t}),
             total=total,
             pending=pending
         )
@@ -292,8 +293,22 @@ def select_input_path():
                 if header_row is None:
                     return JSONResponse(status_code=400, content={"message": "Could not find 'CIN' column in the selected file."})
                 
-                data_rows = df.index[header_row + 1:]
-                total_records = len(data_rows)
+                # Identify CIN column index
+                cin_idx = None
+                for idx, cell in enumerate(df.iloc[header_row]):
+                    if "CIN" in str(cell).upper():
+                        cin_idx = idx
+                        break
+                
+                # Get data rows after header
+                data_df = df.iloc[header_row + 1:]
+                
+                # Filter out rows where CIN is empty
+                if cin_idx is not None:
+                    data_df = data_df[data_df[cin_idx].notna()]
+                    data_df = data_df[data_df[cin_idx].astype(str).str.strip() != ""]
+                
+                total_records = len(data_df)
                 
                 if total_records > config.MAX_RECORDS_PER_FILE:
                     return JSONResponse(status_code=400, content={
@@ -316,17 +331,19 @@ def select_input_path():
                         break
                 
                 if status_col is not None:
-                    # Get only the data rows after the header
-                    # Use .iloc to skip header row and conversion to string to be safe
-                    all_rows = df_temp[status_col].tolist()
-                    data_statuses = all_rows[header_row + 1:]
+                    # Get statuses from the filtered data_df
+                    # Find which index in df.iloc[header_row] corresponds to status_col
+                    status_idx = None
+                    for idx, col_name in enumerate(df.iloc[header_row]):
+                        if str(col_name).strip().lower() == 'status':
+                            status_idx = idx
+                            break
                     
-                    exported_count = 0
-                    for s in data_statuses:
-                        if str(s).strip().lower() == "exported":
-                            exported_count += 1
-                            
-                    pending_count = total_records - exported_count
+                    if status_idx is not None:
+                        data_statuses = data_df[status_idx].astype(str).str.strip().str.lower().tolist()
+                        exported_count = sum(1 for s in data_statuses if s == "exported")
+                        pending_count = total_records - exported_count
+                    
                     print(f"[DEBUG] Records: Total={total_records}, Exported={exported_count}, Pending={pending_count}")
 
                 scraper_state["input_file"] = file_path
