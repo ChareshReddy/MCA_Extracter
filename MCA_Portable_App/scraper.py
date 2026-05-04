@@ -423,9 +423,10 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
             logger.info(f"Successfully exported {cin}")
             log(f"[Save] {cin} -> Exported")
         else:
-            df_full.at[idx, 'Status'] = "Incorrect Format"
+            # If we reached here, the format was correct but the data fetch failed
+            df_full.at[idx, 'Status'] = "Extraction Failed"
             df_full.at[idx, 'Extracted Time'] = current_time
-            log(f"[Fail] {cin} -> Incorrect Format")
+            log(f"[Fail] {cin} -> Extraction Failed (Data not yet available or Source Error)")
  
         # Save both files incrementally
         try:

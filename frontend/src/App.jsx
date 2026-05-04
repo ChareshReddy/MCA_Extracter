@@ -14,7 +14,9 @@ import {
   Cpu,
   Lock,
   Unlock,
-  Square
+  Square,
+  FileText,
+  Save
 } from 'lucide-react';
 
 const API_BASE = 'http://localhost:8000';

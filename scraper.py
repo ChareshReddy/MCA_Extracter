@@ -384,10 +384,10 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
             logger.info(f"Successfully exported {cin}")
             log(f"[Save] {cin} -> Exported")
         else:
-            df_full.at[idx, 'Status'] = "Incorrect Format"
+            df_full.at[idx, 'Status'] = "Extraction Failed"
             df_full.at[idx, 'Extracted Time'] = current_time
-            logger.error(f"Failed to export {cin} (Incorrect Format or NA)")
-            log(f"[Fail] {cin} -> Incorrect Format")
+            logger.error(f"Failed to export {cin} (Extraction Failed)")
+            log(f"[Fail] {cin} -> Extraction Failed")
 
         # Save both files incrementally
         try:
