@@ -306,11 +306,11 @@ function App() {
               <div className="progress-header">
                 <span style={{ fontWeight: '600', color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>EXTRACTION PROGRESS</span>
                 <span style={{ fontWeight: '700', color: 'var(--accent-blue)' }}>
-                  {status.progress} / {pendingRecords} ({pendingRecords > 0 ? ((status.progress / pendingRecords) * 100).toFixed(1) : "0.0"}%)
+                  {status.progress} / {totalRecords} ({totalRecords > 0 ? ((status.progress / totalRecords) * 100).toFixed(1) : "0.0"}%)
                 </span>
               </div>
               <div className="progress-track">
-                <div className="progress-fill" style={{ width: `${pendingRecords > 0 ? (status.progress / pendingRecords) * 100 : 0}%` }}></div>
+                <div className="progress-fill" style={{ width: `${totalRecords > 0 ? (status.progress / totalRecords) * 100 : 0}%` }}></div>
               </div>
             </div>
 
@@ -328,7 +328,7 @@ function App() {
               <div className="stat-card">
                 <div className="stat-label">Success Rate</div>
                 <div className="stat-value" style={{ color: 'var(--success-green)' }}>
-                  {pendingRecords > 0 ? ((status.progress / pendingRecords) * 100).toFixed(1) : "0.0"}%
+                  {totalRecords > 0 ? ((status.progress / totalRecords) * 100).toFixed(1) : "0.0"}%
                 </div>
               </div>
             </div>

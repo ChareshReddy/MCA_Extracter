@@ -350,10 +350,10 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
             pass
 
     session = requests.Session(impersonate="chrome110")
-    processed_count = 0
     
-    # Calculate initial progress based on existing results
-    processed_count = len(results)
+    # Calculate initial progress based on the INPUT file status
+    # This ensures we don't count records from other sessions in the same output file
+    processed_count = sum(1 for idx in data_rows if str(df_full.at[idx, 'Status']).strip() == "Exported")
     update_progress(processed_count, total_records)
 
     for idx in data_rows:
