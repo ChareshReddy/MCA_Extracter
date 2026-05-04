@@ -284,7 +284,7 @@ def scrape_mca_data(session, cin, log_callback=None):
          raise Exception("WAF_Block") 
 
 
-def run(input_file=None, output_file=None, delay_range=None, log_callback=None, stop_event=None, progress_callback=None):
+def run(input_file=None, output_file=None, delay_range=None, log_callback=None, stop_event=None, progress_callback=None, total=0, pending=0):
     """
     Main Execution Engine. Handles status tracking, record limits, and incremental saving.
     """
@@ -336,7 +336,9 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
         return
 
     log(f"[OK] Total CINs found: {total_records}")
-
+    if pending > 0:
+        log(f"[OK] Records to process: {pending}")
+    
     # Results for the output file
     results = []
     # If output file exists, maybe load existing results? 
@@ -350,11 +352,11 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
             pass
 
     session = requests.Session(impersonate="chrome110")
+    processed_count = 0
+    update_progress(0, pending if pending > 0 else total_records)
     
-    # Calculate initial progress based on the INPUT file status
-    # This ensures we don't count records from other sessions in the same output file
-    processed_count = sum(1 for idx in data_rows if str(df_full.at[idx, 'Status']).strip() == "Exported")
-    update_progress(processed_count, total_records)
+    # Track how many from the pending list we actually finish in THIS session
+    session_target = pending if pending > 0 else total_records
 
     for idx in data_rows:
         if stop_event and stop_event.is_set():
@@ -377,7 +379,7 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
             try:
                 df_full.to_excel(input_file, index=False, header=False)
                 processed_count += 1
-                update_progress(processed_count, total_records)
+                update_progress(processed_count, session_target)
             except: pass
             continue
 
@@ -424,7 +426,7 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
             df_full.at[idx, 'Status'] = "Incorrect Format"
             df_full.at[idx, 'Extracted Time'] = current_time
             log(f"[Fail] {cin} -> Incorrect Format")
-
+ 
         # Save both files incrementally
         try:
             # Save Input File (Status update)
@@ -435,7 +437,7 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
             # Save Output File
             pd.DataFrame(results).to_excel(output_file, index=False)
             processed_count += 1
-            update_progress(processed_count, total_records)
+            update_progress(processed_count, session_target)
         except Exception as e:
             log(f"[!] Warning: Could not save files (maybe they are open in Excel?): {e}")
 

@@ -256,7 +256,7 @@ def scrape_mca_data(session, cin, log_callback=None):
          raise Exception("WAF_Block") 
 
 
-def run(input_file=None, output_file=None, delay_range=None, log_callback=None, stop_event=None, progress_callback=None):
+def run(input_file=None, output_file=None, delay_range=None, log_callback=None, stop_event=None, progress_callback=None, total=0, pending=0):
     """
     Main Execution Engine. Handles status tracking, record limits, and incremental saving.
     """
@@ -323,10 +323,7 @@ def run(input_file=None, output_file=None, delay_range=None, log_callback=None, 
 
     session = requests.Session(impersonate="chrome110")
     processed_count = 0
-    
-    # Calculate initial progress based on existing results
-    processed_count = len(results)
-    update_progress(processed_count, total_records)
+    update_progress(0, total_records)
 
     for idx in data_rows:
         if stop_event and stop_event.is_set():

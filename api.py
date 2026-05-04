@@ -153,6 +153,7 @@ def run_scraper_background(input_path: str, output_path: str, delay_min: int, de
     scraper_state["output_file"] = output_path
     scraper_state["total"] = total
     scraper_state["pending"] = pending
+    scraper_state["progress"] = 0
     stop_event.clear()
     
     # Prevent system from sleeping while engine is active
@@ -168,7 +169,9 @@ def run_scraper_background(input_path: str, output_path: str, delay_min: int, de
             output_file=output_path,
             delay_range=(delay_min, delay_max),
             stop_event=stop_event,
-            progress_callback=lambda p, t: scraper_state.update({"progress": p, "total": t})
+            progress_callback=lambda p, t: scraper_state.update({"progress": p, "total": t}),
+            total=total,
+            pending=pending
         )
     except Exception as e:
         scraper_state["error"] = str(e)
