@@ -323,12 +323,12 @@ function App() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-dim)', flex: 1, minWidth: 0 }}>
                   <FileText size={14} color="var(--accent-blue)" />
                   <span style={{ fontWeight: '600', color: 'var(--accent-blue)', textTransform: 'uppercase', fontSize: '0.65rem' }}>INPUT:</span>
-                  <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{inputPath ? inputPath.split(/[/\\]/).pop() : "Not Selected"}</span>
+                  <span className="file-name-full">{inputPath ? inputPath.split(/[/\\]/).pop() : "Not Selected"}</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-dim)', flex: 1, minWidth: 0 }}>
                   <Save size={14} color="var(--accent-purple)" />
                   <span style={{ fontWeight: '600', color: 'var(--accent-purple)', textTransform: 'uppercase', fontSize: '0.65rem' }}>OUTPUT:</span>
-                  <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{outputPath ? outputPath.split(/[/\\]/).pop() : "Not Selected"}</span>
+                  <span className="file-name-full">{outputPath ? outputPath.split(/[/\\]/).pop() : "Not Selected"}</span>
                 </div>
               </div>
             </div>

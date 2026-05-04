@@ -264,6 +264,12 @@ body {
   white-space: nowrap;
 }
 
+.file-name-full {
+  overflow-wrap: break-word;
+  word-break: break-all;
+  line-height: 1.2;
+}
+
 /* Buttons */
 .btn-base {
   display: inline-flex;
